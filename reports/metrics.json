@@ -1,0 +1,845 @@
+[
+  {
+    "timestamp": "2025-12-08 15:04:43",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251208_150438.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.915,
+    "P_QRS_T_mm": [
+      187,
+      5,
+      39
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.749,
+      1.166
+    ]
+  },
+  {
+    "timestamp": "2025-12-08 15:07:25",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251208_150722.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-08 17:44:37",
+    "file": "/Users/indresh/Downloads/Hyperkalemia_Report_20251208_174435.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-08 17:51:17",
+    "file": "/Users/indresh/Downloads/Hyperkalemia_Report_20251208_175114.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-09 10:08:54",
+    "file": "/Users/indresh/Downloads/Hyperkalemia_Report_20251209_100850.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-09 10:12:11",
+    "file": "/Users/indresh/Downloads/Hyperkalemia_Report_20251209_101207.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-09 10:18:19",
+    "file": "/Users/indresh/Downloads/Hyperkalemia_Report_20251209_101815.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-09 10:22:47",
+    "file": "/Users/indresh/Downloads/Hyperkalemia_Report_20251209_102243.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-09 10:46:22",
+    "file": "/Users/indresh/Downloads/Hyperkalemia_Report_20251209_104608.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-09 10:59:48",
+    "file": "/Users/indresh/Downloads/Hyperkalemia_Report_20251209_105943.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-09 12:13:14",
+    "file": "/Users/indresh/Downloads/Hyperkalemia_Report_20251209_121310.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-09 12:17:11",
+    "file": "/Users/indresh/Downloads/Hyperkalemia_Report_20251209_121708.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 14:31:29",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_143126.pdf",
+    "HR_bpm": 0,
+    "PR_ms": 0,
+    "QRS_ms": 0,
+    "QT_ms": 0,
+    "QTc_ms": 0,
+    "ST_ms": 0,
+    "RR_ms": 0,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 14:38:17",
+    "file": "/Users/indresh/Downloads/HRV_Report_20251210_143814.pdf",
+    "HR_bpm": 119,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 504,
+    "HRV_SDNN_ms": 4.098509965038269,
+    "HRV_RMSSD_ms": 4.361998054450165,
+    "HRV_NN50": 0,
+    "HRV_pNN50": 0,
+    "HRV_SDANN_ms": 1.2196427118919573,
+    "Original_HR_bpm": 60
+  },
+  {
+    "timestamp": "2025-12-10 14:40:02",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_143959.pdf",
+    "HR_bpm": 100,
+    "PR_ms": 150,
+    "QRS_ms": 71,
+    "QT_ms": 500,
+    "QTc_ms": 520,
+    "ST_ms": 6,
+    "RR_ms": 600,
+    "RV5_plus_SV1_mV": 2.046,
+    "P_QRS_T_mm": [
+      0,
+      0,
+      0
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.26,
+      0.786
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 14:51:46",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_145143.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 14:52:28",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_145224.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 90,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 14:59:18",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_145915.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.917,
+    "P_QRS_T_mm": [
+      186,
+      3,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.749,
+      1.168
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 15:03:41",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_150338.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 15:09:34",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_150931.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      187,
+      6,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 15:15:45",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_151541.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 15:22:45",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_152242.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.924,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      35
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.751,
+      1.174
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 15:26:01",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_152558.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 90,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 15:29:23",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_152919.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 15:34:29",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_153426.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 15:39:42",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_153939.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 15:42:28",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_154225.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.915,
+    "P_QRS_T_mm": [
+      187,
+      5,
+      37
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.75,
+      1.166
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 15:45:04",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_154502.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 0,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2025-12-10 15:47:07",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251210_154704.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 90,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2025-12-11 10:49:28",
+    "file": "/Users/indresh/Downloads/HRV_Report_20251211_104925.pdf",
+    "HR_bpm": 84,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 90,
+    "RR_ms": 714,
+    "HRV_SDNN_ms": 390.2642450137028,
+    "HRV_RMSSD_ms": 672.8829913142404,
+    "HRV_NN50": 200,
+    "HRV_pNN50": 99.50248756218906,
+    "HRV_SDANN_ms": 94.9118260398683,
+    "Original_HR_bpm": 60
+  },
+  {
+    "timestamp": "2025-12-11 17:46:43",
+    "file": "/Users/indresh/Downloads/HRV_Report_20251211_174639.pdf",
+    "HR_bpm": 96,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 90,
+    "RR_ms": 625,
+    "HRV_SDNN_ms": 350.7279626808054,
+    "HRV_RMSSD_ms": 609.1633606841435,
+    "HRV_NN50": 16,
+    "HRV_pNN50": 94.11764705882352,
+    "HRV_SDANN_ms": 94.66021104749109,
+    "Original_HR_bpm": 84
+  },
+  {
+    "timestamp": "2025-12-12 16:39:49",
+    "file": "/Users/indresh/Desktop/19_noc code  duplicate/modularecg/src/ECG_Report_20251212_163946.pdf",
+    "HR_bpm": 297,
+    "PR_ms": 150,
+    "QRS_ms": 85,
+    "QT_ms": 436,
+    "QTc_ms": 456,
+    "ST_ms": 6,
+    "RR_ms": 202,
+    "RV5_plus_SV1_mV": 1.905,
+    "P_QRS_T_mm": [
+      182,
+      34,
+      25
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.869,
+      0.035
+    ]
+  },
+  {
+    "timestamp": "2025-12-12 16:52:08",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251212_165202.pdf",
+    "HR_bpm": 54,
+    "PR_ms": 200,
+    "QRS_ms": 105,
+    "QT_ms": 414,
+    "QTc_ms": 434,
+    "ST_ms": -1,
+    "RR_ms": 1111,
+    "RV5_plus_SV1_mV": 2.8,
+    "P_QRS_T_mm": [
+      53,
+      29,
+      47
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.903,
+      0.897
+    ]
+  },
+  {
+    "timestamp": "2025-12-12 16:52:39",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251212_165235.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 178,
+    "QRS_ms": 83,
+    "QT_ms": 311,
+    "QTc_ms": 331,
+    "ST_ms": -1,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.617,
+    "P_QRS_T_mm": [
+      52,
+      29,
+      47
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.925,
+      0.692
+    ]
+  },
+  {
+    "timestamp": "2025-12-12 17:00:02",
+    "file": "/Users/indresh/Desktop/ECG_Report_20251212_165958.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 182,
+    "QRS_ms": 88,
+    "QT_ms": 311,
+    "QTc_ms": 331,
+    "ST_ms": -2,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 3.229,
+    "P_QRS_T_mm": [
+      52,
+      28,
+      48
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.923,
+      1.306
+    ]
+  },
+  {
+    "timestamp": "2025-12-12 17:48:25",
+    "file": "/Users/indresh/Desktop/19_noc code  duplicate/ECG_Report_20251212_174823.pdf",
+    "HR_bpm": 91,
+    "PR_ms": 150,
+    "QRS_ms": 69,
+    "QT_ms": 296,
+    "QTc_ms": 316,
+    "ST_ms": 2,
+    "RR_ms": 659,
+    "RV5_plus_SV1_mV": 0.003,
+    "P_QRS_T_mm": [
+      185,
+      -15,
+      18
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      0.001,
+      0.002
+    ]
+  },
+  {
+    "timestamp": "2025-12-13 09:47:53",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251213_094747.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 90,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.921,
+    "P_QRS_T_mm": [
+      187,
+      6,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.754,
+      1.166
+    ]
+  },
+  {
+    "timestamp": "2025-12-13 09:48:36",
+    "file": "/Users/indresh/Downloads/ECG_Report_20251213_094833.pdf",
+    "HR_bpm": 60,
+    "PR_ms": 160,
+    "QRS_ms": 85,
+    "QT_ms": 360,
+    "QTc_ms": 380,
+    "ST_ms": 90,
+    "RR_ms": 1000,
+    "RV5_plus_SV1_mV": 2.919,
+    "P_QRS_T_mm": [
+      186,
+      5,
+      36
+    ],
+    "QTCF": 0.049,
+    "RV5_SV1_mV": [
+      1.752,
+      1.167
+    ]
+  },
+  {
+    "timestamp": "2026-01-17 12:10:53",
+    "file": "C:\\Users\\DELL\\Downloads\\ECGNEWCAL\\ECGdiv\\src\\ECG_Report_20260117_121050.pdf",
+    "HR_bpm": 120,
+    "PR_ms": 135,
+    "QRS_ms": 86,
+    "QT_ms": 299,
+    "QTc_ms": 423,
+    "ST_ms": 0.0,
+    "RR_ms": 500,
+    "RV5_plus_SV1_mV": 0.828,
+    "P_QRS_T_mm": [
+      -138,
+      -111,
+      -83
+    ],
+    "QTCF": 299.0,
+    "RV5_SV1_mV": [
+      0.565,
+      -0.263
+    ]
+  }
+]

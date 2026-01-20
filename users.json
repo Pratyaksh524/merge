@@ -1,0 +1,124 @@
+{
+  "Divyansh": {
+    "password": "divyansh"
+  },
+  "ptr": {
+    "password": "ptr"
+  },
+  "Divyaansh": {
+    "password": "div"
+  },
+  "asd": {
+    "password": "qwe"
+  },
+  "12345": {
+    "password": "div"
+  },
+  "123456": {
+    "password": "div"
+  },
+  "123456789": {
+    "password": "123456789"
+  },
+  "96789089": {
+    "password": "vijay",
+    "full_name": "vijay",
+    "phone": "96789089",
+    "serial_id": "1212",
+    "email": "",
+    "age": "23",
+    "gender": "male",
+    "address": "122"
+  },
+  "9898989898989": {
+    "password": "jaibhole",
+    "full_name": "textai",
+    "phone": "9898989898989",
+    "serial_id": "12345",
+    "email": "",
+    "age": "11",
+    "gender": "male",
+    "address": "122034"
+  },
+  "9999999": {
+    "password": "12345",
+    "full_name": "rajesh",
+    "phone": "9999999",
+    "serial_id": "12qwer",
+    "email": "",
+    "age": "12",
+    "gender": "male",
+    "address": "1220"
+  },
+  "978978978": {
+    "password": "123456789",
+    "full_name": "aditi",
+    "phone": "978978978",
+    "serial_id": "956",
+    "email": "",
+    "age": "12",
+    "gender": "male",
+    "address": "1220"
+  },
+  "23": {
+    "password": "123456789",
+    "full_name": "Yash ",
+    "phone": "23",
+    "serial_id": "121212",
+    "email": "",
+    "age": "22",
+    "gender": "male",
+    "address": "1220"
+  },
+  "12": {
+    "password": "12",
+    "full_name": "divyansh",
+    "phone": "12",
+    "serial_id": "12",
+    "email": "",
+    "age": "12",
+    "gender": "12",
+    "address": "12"
+  },
+  "1234": {
+    "password": "1234",
+    "full_name": "hotshot",
+    "phone": "1234",
+    "serial_id": "5678",
+    "email": "",
+    "age": "1234",
+    "gender": "12445",
+    "address": "12344"
+  },
+  "delux": {
+    "password": "delux",
+    "full_name": "delux",
+    "phone": "delux",
+    "serial_id": "d40delux",
+    "email": "",
+    "age": "12",
+    "gender": "male",
+    "address": "delux"
+  },
+  "89": {
+    "password": "89",
+    "full_name": "89",
+    "phone": "89",
+    "serial_id": "89",
+    "email": "",
+    "age": "89",
+    "gender": "89",
+    "address": "89"
+  },
+  "95": {
+    "password": "Divyansh",
+    "full_name": "Divyansh",
+    "phone": "95",
+    "serial_id": "123456789",
+    "email": "",
+    "signup_date": "2026-01-16",
+    "age": "22",
+    "gender": "Male",
+    "address": "1220 JFF SECTOR 2 FBD HRY"
+  }
+}

@@ -1,0 +1,52 @@
+warning: in the working copy of 'launch_ecg_monitor.sh', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'setup_cloud.py', LF will be replaced by CRLF the next time Git touches it
+src/dashboard/dashboard.py:1499: trailing whitespace.
+[32m+[m[41m            [m
+src/dashboard/dashboard.py:1501: trailing whitespace.
+[32m+[m[41m            [m
+src/dashboard/dashboard.py:2177: trailing whitespace.
+[32m+[m[41m        [m
+src/dashboard/dashboard.py:2589: trailing whitespace.
+[32m+[m[41m        [m
+src/dashboard/dashboard.py:2590: trailing whitespace.
+[32m+[m[32m        # If there is no valid heart data (HR < 10 bpm or 0 / '--'),[m[41m [m
+src/ecg/expanded_lead_view.py:327: trailing whitespace.
+[32m+[m[41m        [m
+src/ecg/expanded_lead_view.py:331: trailing whitespace.
+[32m+[m[41m        [m
+src/ecg/expanded_lead_view.py:342: trailing whitespace.
+[32m+[m[41m        [m
+src/ecg/expanded_lead_view.py:344: trailing whitespace.
+[32m+[m[41m        [m
+src/ecg/expanded_lead_view.py:348: trailing whitespace.
+[32m+[m[41m        [m
+src/ecg/expanded_lead_view.py:354: trailing whitespace.
+[32m+[m[41m            [m
+src/ecg/expanded_lead_view.py:357: trailing whitespace.
+[32m+[m[41m            [m
+src/ecg/expanded_lead_view.py:363: trailing whitespace.
+[32m+[m[41m            [m
+src/ecg/expanded_lead_view.py:365: trailing whitespace.
+[32m+[m[41m            [m
+src/ecg/expanded_lead_view.py:373: trailing whitespace.
+[32m+[m[41m            [m
+src/ecg/expanded_lead_view.py:381: trailing whitespace.
+[32m+[m[41m            [m
+src/ecg/expanded_lead_view.py:390: trailing whitespace.
+[32m+[m[41m        [m
+src/ecg/expanded_lead_view.py:392: trailing whitespace.
+[32m+[m[41m    [m
+src/ecg/expanded_lead_view.py:404: trailing whitespace.
+[32m+[m[41m    [m
+src/ecg/expanded_lead_view.py:414: trailing whitespace.
+[32m+[m[41m    [m
+src/ecg/expanded_lead_view.py:424: trailing whitespace.
+[32m+[m[41m    [m
+src/ecg/expanded_lead_view.py:437: trailing whitespace.
+[32m+[m[41m    [m
+src/ecg/expanded_lead_view.py:446: trailing whitespace.
+[32m+[m[41m    [m
+src/ecg/expanded_lead_view.py:455: trailing whitespace.
+[32m+[m[41m    [m
+src/ecg/expanded_lead_view.py:456: leftover conflict marker
+src/ecg/recording.py:227: leftover conflict marker

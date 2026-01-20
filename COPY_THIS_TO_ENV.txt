@@ -1,0 +1,32 @@
+# ============================================================
+# COPY THIS FILE AND RENAME TO ".env"
+# ============================================================
+# 
+# Quick Setup:
+#   1. Copy this file: cp COPY_THIS_TO_ENV.txt .env
+#   2. Ask Divyansh for the 4 values below
+#   3. Replace the placeholders with real values
+#   4. Save and test: python3 test_cloud_connection.py
+#
+# ============================================================
+
+CLOUD_SERVICE=s3
+AWS_ACCESS_KEY_ID=AKIA****************
+AWS_SECRET_ACCESS_KEY=********************************
+AWS_S3_BUCKET=ecg-****************
+AWS_S3_REGION=us-east-1
+
+# ============================================================
+# INSTRUCTIONS:
+# ============================================================
+#
+# 1. Get credentials from Divyansh (secure channel only)
+# 2. Replace the stars (*) with real values
+# 3. Save this file as ".env" in project root
+# 4. Run: python3 test_cloud_connection.py
+# 5. If you see "SUCCESS", you're ready!
+#
+# Need help? Read TEAM_ENV_SETUP.md
+#
+# ============================================================
+

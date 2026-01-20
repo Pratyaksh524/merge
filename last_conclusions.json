@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-01-20 17:14:18",
+  "findings": [
+    "Severe Tachycardia",
+    "Short PR interval",
+    "Normal QRS duration",
+    "Low HRV"
+  ],
+  "recommendations": [
+    "Consult physician, check for arrhythmias",
+    "Monitor for accessory pathway patterns, consult if symptomatic",
+    "Ensure adequate rest and stress management"
+  ]
+}

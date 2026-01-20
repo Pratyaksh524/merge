@@ -1,0 +1,132 @@
+==================================================
+HRV Metrics Report
+==================================================
+Generated: 2025-12-08 12:30:13
+--------------------------------------------------
+
+Average NN Intervals (mean RR interval): 667.29 ms
+   Formula: average_nn_intervals = mean(RR_intervals)
+SDNN (Standard Deviation of NN intervals): 365.59 ms
+   Formula: SDNN = std(RR_intervals)
+SDANN (Standard Deviation of Average NN intervals): 192.51 ms
+   Formula: SDANN = std(mean_segment_intervals)
+RMSSD (Root Mean Square of Successive Differences): 628.72 ms
+NN50 (Number of NN intervals > 50ms different): 50
+pNN50 (Percentage of NN50): 98.04%
+Mean Heart Rate: 89.92 bpm
+--------------------------------------------------
+
+Calculation Details:
+Total Lead II samples: 8660
+RR intervals used: 51
+Average NN Intervals: 667.29 ms
+Min RR interval: 324.00 ms
+Max RR interval: 1188.00 ms
+RR interval range: 864.00 ms
+
+SDANN Calculation Details:
+   Segments used: 5
+   Segment length: 10 intervals per segment
+   SDANN = std(segment_averages) = 192.51 ms ✓
+
+
+==================================================
+==================================================
+==================================================
+HRV Metrics Report
+==================================================
+Generated: 2025-12-10 14:38:17
+--------------------------------------------------
+
+Average NN Intervals (mean RR interval): 399.79 ms
+   Formula: average_nn_intervals = mean(RR_intervals)
+SDNN (Standard Deviation of NN intervals): 4.10 ms
+   Formula: SDNN = std(RR_intervals)
+SDANN (Standard Deviation of Average NN intervals): 1.22 ms
+   Formula: SDANN = std(mean_segment_intervals)
+RMSSD (Root Mean Square of Successive Differences): 4.36 ms
+NN50 (Number of NN intervals > 50ms different): 0
+pNN50 (Percentage of NN50): 0.00%
+Mean Heart Rate: 150.08 bpm
+--------------------------------------------------
+
+Calculation Details:
+Total Lead II samples: 3900
+RR intervals used: 38
+Average NN Intervals: 399.79 ms
+Min RR interval: 376.00 ms
+Max RR interval: 404.00 ms
+RR interval range: 28.00 ms
+
+SDANN Calculation Details:
+   Segments used: 5
+   Segment length: 7 intervals per segment
+   SDANN = std(segment_averages) = 1.22 ms ✓
+
+
+==================================================
+==================================================
+==================================================
+HRV Metrics Report
+==================================================
+Generated: 2025-12-11 10:49:28
+--------------------------------------------------
+
+Average NN Intervals (mean RR interval): 697.11 ms
+   Formula: average_nn_intervals = mean(RR_intervals)
+SDNN (Standard Deviation of NN intervals): 390.26 ms
+   Formula: SDNN = std(RR_intervals)
+SDANN (Standard Deviation of Average NN intervals): 94.91 ms
+   Formula: SDANN = std(mean_segment_intervals)
+RMSSD (Root Mean Square of Successive Differences): 672.88 ms
+NN50 (Number of NN intervals > 50ms different): 200
+pNN50 (Percentage of NN50): 99.50%
+Mean Heart Rate: 86.07 bpm
+--------------------------------------------------
+
+Calculation Details:
+Total Lead II samples: 35100
+RR intervals used: 201
+Average NN Intervals: 697.11 ms
+Min RR interval: 320.00 ms
+Max RR interval: 1520.00 ms
+RR interval range: 1200.00 ms
+
+SDANN Calculation Details:
+   Segments used: 5
+   Segment length: 40 intervals per segment
+   SDANN = std(segment_averages) = 94.91 ms ✓
+
+
+==================================================
+==================================================
+==================================================
+HRV Metrics Report
+==================================================
+Generated: 2025-12-11 17:46:43
+--------------------------------------------------
+
+Average NN Intervals (mean RR interval): 638.12 ms
+   Formula: average_nn_intervals = mean(RR_intervals)
+SDNN (Standard Deviation of NN intervals): 350.73 ms
+   Formula: SDNN = std(RR_intervals)
+SDANN (Standard Deviation of Average NN intervals): 94.66 ms
+   Formula: SDANN = std(mean_segment_intervals)
+RMSSD (Root Mean Square of Successive Differences): 609.16 ms
+NN50 (Number of NN intervals > 50ms different): 16
+pNN50 (Percentage of NN50): 94.12%
+Mean Heart Rate: 94.03 bpm
+--------------------------------------------------
+
+Calculation Details:
+Total Lead II samples: 2980
+RR intervals used: 17
+Average NN Intervals: 638.12 ms
+Min RR interval: 328.00 ms
+Max RR interval: 1176.00 ms
+RR interval range: 848.00 ms
+
+SDANN Calculation Details:
+   Segments used: 5
+   Segment length: 3 intervals per segment
+   SDANN = std(segment_averages) = 94.66 ms ✓

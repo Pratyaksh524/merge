@@ -1,0 +1,230 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                    CURRENT vs NEW HARDWARE PROTOCOL                        ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          CURRENT PROTOCOL                                │
+└─────────────────────────────────────────────────────────────────────────┘
+
+   Serial Port Input (Text/ASCII):
+   ┌──────────────────────────────────────────────────────────────────┐
+   │  "2100 2050 2150 2200 2050 2100 2150 2200\r\n"                  │
+   └──────────────────────────────────────────────────────────────────┘
+                              ↓
+   Python Code (readline + split):
+   ┌──────────────────────────────────────────────────────────────────┐
+   │  line = ser.readline().decode('utf-8')                           │
+   │  values = [int(x) for x in line.split()]                         │
+   └──────────────────────────────────────────────────────────────────┘
+                              ↓
+   Result:
+   ┌──────────────────────────────────────────────────────────────────┐
+   │  [2100, 2050, 2150, 2200, 2050, 2100, 2150, 2200]               │
+   │   └─┬─┘ └─┬─┘ └─┬─┘ └─┬─┘ └─┬─┘ └─┬─┘ └─┬─┘ └─┬─┘               │
+   │    Ch1   Ch2   Ch3   Ch4   Ch5   Ch6   Ch7   Ch8                │
+   └──────────────────────────────────────────────────────────────────┘
+
+   ❌ NO VALIDATION
+   ❌ NO CONNECTION STATUS  
+   ❌ NO ERROR DETECTION
+
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                            NEW PROTOCOL                                  │
+└─────────────────────────────────────────────────────────────────────────┘
+
+   Serial Port Input (Binary - 22 bytes):
+   ┌───┬───┬───┬───┬───┬────┬────┬────┬────┬─────┬─────┬───┐
+   │E8 │00 │11 │20 │15 │ 7F │ 3F │ 7F │ 3F │ ... │ ... │8E │
+   └─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴──┬─┴──┬─┴──┬─┴──┬─┴───┬─┴───┬─┴─┬─┘
+     │   │   │   │   │    │    │    │    │     │     │   │
+   Start│  Len │  Cksum  LSB1  LSB2  ...  LSB8 MSB8  End
+      Counter OpCode    MSB1  MSB2       MSB7
+                              ↓
+   Python Code (binary parsing):
+   ┌──────────────────────────────────────────────────────────────────┐
+   │  packet = ser.read(22)                                           │
+   │                                                                  │
+   │  # Validate markers                                              │
+   │  if packet[0] != 0xE8 or packet[21] != 0x8E:                    │
+   │      return None  # Bad packet                                   │
+   │                                                                  │
+   │  # Validate checksum                                             │
+   │  if checksum(packet[5:21]) != packet[4]:                         │
+   │      return None  # Corrupted                                    │
+   │                                                                  │
+   │  # Extract 8 leads with connection status                        │
+   │  for i in range(8):                                              │
+   │      lsb = packet[5 + i*2]                                       │
+   │      msb = packet[6 + i*2]                                       │
+   │      value = ((msb & 0x1F) << 7) | (lsb & 0x7F)                  │
+   │      connected = bool(msb & 0x20)                                │
+   └──────────────────────────────────────────────────────────────────┘
+                              ↓
+   Result:
+   ┌──────────────────────────────────────────────────────────────────┐
+   │  values:      [2100, 2050, 2150, 2200, 2050, 2100, 2150, 2200]  │
+   │  connections: [ ✓,   ✓,   ✗,   ✓,   ✓,   ✓,   ✗,   ✓ ]         │
+   │                              ↑                         ↑          │
+   │                           V1 OFF                    V5 OFF        │
+   └──────────────────────────────────────────────────────────────────┘
+
+   ✅ FRAME MARKERS (0xE8...0x8E)
+   ✅ CHECKSUM VALIDATION
+   ✅ PACKET COUNTER (detect drops)
+   ✅ CONNECTION STATUS PER LEAD
+
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       BYTE-LEVEL BREAKDOWN                               │
+└─────────────────────────────────────────────────────────────────────────┘
+
+   22-byte packet structure:
+
+   Byte 0:  [0xE8]        ← Start marker (always)
+   Byte 1:  [0x00-0x3F]   ← Counter (0-63, wraps around)
+   Byte 2:  [0x11]        ← Length = 17 bytes (always)
+   Byte 3:  [0x20]        ← OpCode
+   Byte 4:  [0x??]        ← Checksum (validate data)
+   ─────────────────────────────────────────────────────────────
+   Byte 5:  [LSB1]        ← Lead I  - Lower 7 bits
+   Byte 6:  [MSB1]        ← Lead I  - Upper 5 bits + LA connection
+   ─────────────────────────────────────────────────────────────
+   Byte 7:  [LSB2]        ← Lead II - Lower 7 bits
+   Byte 8:  [MSB2]        ← Lead II - Upper 5 bits + RA/LL status
+   ─────────────────────────────────────────────────────────────
+   Byte 9:  [LSB3]        ← V1 - Lower 7 bits
+   Byte 10: [MSB3]        ← V1 - Upper 5 bits + V1 connection
+   ─────────────────────────────────────────────────────────────
+   Byte 11: [LSB4]        ← V2 - Lower 7 bits
+   Byte 12: [MSB4]        ← V2 - Upper 5 bits + V2 connection
+   ─────────────────────────────────────────────────────────────
+   Byte 13: [LSB5]        ← V3 - Lower 7 bits
+   Byte 14: [MSB5]        ← V3 - Upper 5 bits + V3 connection
+   ─────────────────────────────────────────────────────────────
+   Byte 15: [LSB6]        ← V4 - Lower 7 bits
+   Byte 16: [MSB6]        ← V4 - Upper 5 bits + V4 connection
+   ─────────────────────────────────────────────────────────────
+   Byte 17: [LSB7]        ← V5 - Lower 7 bits
+   Byte 18: [MSB7]        ← V5 - Upper 5 bits + V5 connection
+   ─────────────────────────────────────────────────────────────
+   Byte 19: [LSB8]        ← V6 - Lower 7 bits
+   Byte 20: [MSB8]        ← V6 - Upper 5 bits + V6 connection
+   ─────────────────────────────────────────────────────────────
+   Byte 21: [0x8E]        ← End marker (always)
+
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    HOW TO DECODE SIGNAL VALUE                            │
+└─────────────────────────────────────────────────────────────────────────┘
+
+   Example: Decode Lead I (bytes 5-6)
+
+   LSB (Byte 5) = 0x34 = 0 0 1 1 0 1 0 0
+                          ↑ └─────────┘
+                          │  Lower 7 bits
+                     Always 0
+
+   MSB (Byte 6) = 0x28 = 0 0 1 0 1 0 0 0
+                          ↑ ↑ └───────┘
+                          │ │  Upper 5 bits
+                          │ Connection (1=on)
+                     Additional status
+
+   Signal = (MSB[4:0] << 7) | LSB[6:0]
+          = (0x08 << 7) | 0x34
+          = 1024 + 52
+          = 1076
+
+   Connection = MSB[5]
+              = bit 5 of 0x28
+              = 1 (CONNECTED ✓)
+
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         CODE CHANGES NEEDED                              │
+└─────────────────────────────────────────────────────────────────────────┘
+
+   File: src/ecg/twelve_lead_test.py
+
+   ┌─────────────────────────────────────────────────────────────────┐
+   │ OLD (line ~223):                                                │
+   │                                                                 │
+   │   line = self.ser.readline()                                    │
+   │   values = [int(x) for x in line.split()]                       │
+   └─────────────────────────────────────────────────────────────────┘
+                              ↓  REPLACE WITH  ↓
+   ┌─────────────────────────────────────────────────────────────────┐
+   │ NEW:                                                            │
+   │                                                                 │
+   │   packet = self.ser.read(22)                                    │
+   │   if packet[0] != 0xE8 or packet[21] != 0x8E:                  │
+   │       return None                                               │
+   │                                                                 │
+   │   values = []                                                   │
+   │   connections = []                                              │
+   │   for i in range(8):                                            │
+   │       lsb = packet[5 + i*2]                                     │
+   │       msb = packet[6 + i*2]                                     │
+   │       signal = ((msb & 0x1F) << 7) | (lsb & 0x7F)               │
+   │       connected = bool(msb & 0x20)                              │
+   │       values.append(signal)                                     │
+   │       connections.append(connected)                             │
+   │                                                                 │
+   │   return {'values': values, 'connections': connections}         │
+   └─────────────────────────────────────────────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         UI CHANGES NEEDED                                │
+└─────────────────────────────────────────────────────────────────────────┘
+
+   Need to add connection indicators on 12-lead display:
+
+   ┌────────────────────────┐  ┌────────────────────────┐
+   │ Lead I          ● ✓    │  │ Lead II         ● ✓    │
+   │ ╱╲   ╱╲   ╱╲   ╱╲     │  │ ╱╲   ╱╲   ╱╲   ╱╲     │
+   │╱  ╲ ╱  ╲ ╱  ╲ ╱  ╲    │  │╱  ╲ ╱  ╲ ╱  ╲ ╱  ╲    │
+   └────────────────────────┘  └────────────────────────┘
+                ↑ Green = Connected
+
+   ┌────────────────────────┐  ┌────────────────────────┐
+   │ V1              ● ✗    │  │ V2              ● ✓    │
+   │                        │  │ ╱╲   ╱╲   ╱╲   ╱╲     │
+   │   LEAD OFF             │  │╱  ╲ ╱  ╲ ╱  ╲ ╱  ╲    │
+   └────────────────────────┘  └────────────────────────┘
+                ↑ Red = Disconnected
+
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    EFFORT ESTIMATE (HOURS)                               │
+└─────────────────────────────────────────────────────────────────────────┘
+
+   ┌──────────────────────────────────┬────────┬────────────┐
+   │ Task                             │ Hours  │ Complexity │
+   ├──────────────────────────────────┼────────┼────────────┤
+   │ Binary packet parser             │ 2-3    │ Medium     │
+   │ Signal decoding (bitwise)        │ 1-2    │ Low        │
+   │ Checksum implementation          │ 1      │ Low        │
+   │ Packet validation logic          │ 1-2    │ Low        │
+   │ Connection status extraction     │ 1-2    │ Medium     │
+   │ UI indicators (green/red dots)   │ 2-3    │ Medium     │
+   │ "Lead Off" display               │ 1      │ Low        │
+   │ Testing with sample packets      │ 2-3    │ Medium     │
+   │ Hardware integration testing     │ 3-4    │ High       │
+   │ Documentation                    │ 2      │ Low        │
+   ├──────────────────────────────────┼────────┼────────────┤
+   │ TOTAL                            │ 16-24  │ Medium     │
+   └──────────────────────────────────┴────────┴────────────┘
+
+   Timeline: 2-3 business days
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║  VERDICT: YES, VERY FEASIBLE! ✓                                          ║
+║                                                                           ║
+║  • Clear specification from hardware team                                ║
+║  • Standard binary protocol (similar to many medical devices)            ║
+║  • Only need checksum formula and signal voltage range                   ║
+║  • Can implement in 2-3 days                                             ║
+╚═══════════════════════════════════════════════════════════════════════════╝

@@ -1,0 +1,31 @@
+═══════════════════════════════════════════════════════════════════════════
+                        🔒 QUICK ROLLBACK REFERENCE                        
+═══════════════════════════════════════════════════════════════════════════
+
+COMMIT ID: e139d0e
+FULL ID:   e139d0eee0e9205746ffc69bc961f1c880e11122
+DATE:      December 3, 2025
+STATUS:    ✅ ALL FEATURES WORKING PERFECTLY
+
+───────────────────────────────────────────────────────────────────────────
+EMERGENCY ROLLBACK (ONE COMMAND):
+───────────────────────────────────────────────────────────────────────────
+
+    git reset --hard e139d0e
+
+───────────────────────────────────────────────────────────────────────────
+WHAT'S WORKING IN THIS VERSION:
+───────────────────────────────────────────────────────────────────────────
+
+✅ BPM: 10-300 range, stable, accurate
+✅ 12-Lead: No cropping at any mm/mV
+✅ Expanded View: Maximized, responsive, accurate
+✅ Demo Mode: Wave gain & speed both work
+✅ Control Panels: Responsive on maximize
+✅ Arrhythmia: Visual markers + history scroll
+✅ Metrics: All calculations accurate
+
+───────────────────────────────────────────────────────────────────────────
+KEEP THIS ID SAFE - YOU CAN RESTORE ANYTIME!
+═══════════════════════════════════════════════════════════════════════════
+

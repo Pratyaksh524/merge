@@ -1,0 +1,30 @@
+# ECG Monitor Email Configuration Template
+# Copy this file to .env and fill in your email settings
+
+# Gmail SMTP Configuration (recommended)
+EMAIL_SMTP_SERVER=smtp.gmail.com
+EMAIL_SMTP_PORT=587
+
+# Your email credentials
+EMAIL_SENDER=your_email@gmail.com
+EMAIL_PASSWORD=your_app_password_here
+
+# Where to send crash reports
+EMAIL_RECIPIENT=your_email@gmail.com
+
+# Email subject prefix
+EMAIL_SUBJECT_PREFIX=[ECG Monitor] Crash Report
+
+# Chatbot API Key (optional)
+CHATBOT_API_KEY=your_chatbot_api_key_here
+
+# Instructions:
+# 1. Copy this file to .env (remove .template)
+# 2. Replace your_email@gmail.com with your actual Gmail address
+# 3. Generate an App Password for Gmail:
+#    - Go to Google Account settings
+#    - Security > 2-Step Verification > App passwords
+#    - Generate password for "Mail"
+#    - Use that password (not your regular Gmail password)
+# 4. Save the .env file
+# 5. The crash logger will now work on this computer

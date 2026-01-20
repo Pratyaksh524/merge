@@ -1,0 +1,74 @@
+# ========================================
+# ECG Monitor - Cloud Configuration Template
+# ========================================
+# 
+# INSTRUCTIONS FOR SETUP:
+# 1. Copy this file and rename it to ".env"
+#    Command: cp env_template.txt .env
+#
+# 2. Fill in your AWS credentials below
+# 3. DO NOT commit the actual .env file to GitHub (it's in .gitignore)
+# 4. Share credentials securely with your team (not via GitHub)
+#
+# ========================================
+
+# Cloud Service Provider (currently only AWS S3 is supported)
+CLOUD_SERVICE=s3
+
+# AWS S3 Configuration
+# Get these from: https://console.aws.amazon.com/iam/
+AWS_ACCESS_KEY_ID=your_access_key_here
+AWS_SECRET_ACCESS_KEY=your_secret_key_here
+AWS_S3_BUCKET=your_bucket_name_here
+AWS_S3_REGION=us-east-1
+
+# ========================================
+# SETUP GUIDE FOR TEAM MEMBERS:
+# ========================================
+#
+# Step 1: Get AWS Credentials
+# --------------------------------
+# Ask your team lead (Divyansh) for:
+# - AWS_ACCESS_KEY_ID
+# - AWS_SECRET_ACCESS_KEY
+# - AWS_S3_BUCKET name
+# - AWS_S3_REGION
+#
+# Step 2: Create Your .env File
+# --------------------------------
+# In the project root directory, run:
+#   cp env_template.txt .env
+#   nano .env  (or use any text editor)
+#
+# Step 3: Paste Your Credentials
+# --------------------------------
+# Replace the placeholder values above with real credentials
+#
+# Step 4: Test Connection
+# --------------------------------
+# Run the test script:
+#   python3 test_cloud_connection.py
+#
+# ========================================
+# SECURITY NOTES:
+# ========================================
+# - NEVER commit .env file to GitHub
+# - NEVER share credentials in chat/email (use secure channels)
+# - NEVER hardcode credentials in Python files
+# - The .env file is already in .gitignore
+#
+# ========================================
+# TROUBLESHOOTING:
+# ========================================
+# 
+# Error: "Cloud Not Configured"
+# Solution: Make sure .env file exists in project root
+#
+# Error: "Access Denied" or "403 Forbidden"
+# Solution: Verify your AWS credentials are correct
+#
+# Error: "Bucket does not exist"
+# Solution: Check the bucket name spelling
+#
+# ========================================
+
