@@ -11,7 +11,7 @@ import numpy as np
 from datetime import datetime
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox, QMessageBox,
-    QSizePolicy, QFrame, QGridLayout
+    QSizePolicy, QFrame, QGridLayout, QApplication
 )
 from PyQt5.QtGui import QFont, QColor
 from PyQt5.QtCore import Qt, QTimer
@@ -62,8 +62,21 @@ class HyperkalemiaTestWindow(QWidget):
         super().__init__(parent)
         self.username = username
         self.setWindowTitle("Hyperkalemia Detection Test")
-        self.setMinimumSize(1400, 1000)
-        self.setGeometry(100, 100, 1400, 1000)
+        try:
+            screen = QApplication.primaryScreen().availableGeometry()
+            width = int(screen.width() * 0.90)
+            height = int(screen.height() * 0.90)
+            self.resize(width, height)
+            
+            # Center the window
+            x = (screen.width() - width) // 2
+            y = (screen.height() - height) // 2
+            self.move(x, y)
+        except Exception:
+            # Fallback if screen geometry fails
+            self.resize(1400, 1000)
+            
+        self.setMinimumSize(1024, 768)
         # Set window flags to make it a separate window
         self.setWindowFlags(Qt.Window | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint | Qt.WindowCloseButtonHint)
         self.setWindowModality(Qt.ApplicationModal)
@@ -316,6 +329,7 @@ class HyperkalemiaTestWindow(QWidget):
         
         # Plot area - Grid layout for 7 leads (Lead II + V1-V6)
         plot_frame = QFrame()
+        plot_frame.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         plot_frame.setStyleSheet("background: #f8f9fa; border-radius: 16px; padding: 12px; border: 2px solid #e9ecef;")
         plot_layout = QGridLayout(plot_frame)
         plot_layout.setSpacing(10)

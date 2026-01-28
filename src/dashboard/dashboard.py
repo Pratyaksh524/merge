@@ -862,15 +862,15 @@ class Dashboard(QWidget):
         """)
         
         issue_layout.addWidget(self.conclusion_box)
-        # Small footer box below the conclusion (~3 cm height)
-        self.conclusion_footer = QFrame()
-        self.conclusion_footer.setStyleSheet("background: #f7f7f7; border: none; border-radius: 10px;")
-        self.conclusion_footer.setFixedHeight(115)
-        self.conclusion_footer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        _footer_layout = QHBoxLayout(self.conclusion_footer)
-        _footer_layout.setContentsMargins(10, 8, 10, 8)
-        _footer_layout.addWidget(QLabel(""))
-        issue_layout.addWidget(self.conclusion_footer)
+        # # Small footer box below the conclusion (~3 cm height)
+        # self.conclusion_footer = QFrame()
+        # self.conclusion_footer.setStyleSheet("background: #f7f7f7; border: none; border-radius: 10px;")
+        # self.conclusion_footer.setFixedHeight(115)
+        # self.conclusion_footer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        # _footer_layout = QHBoxLayout(self.conclusion_footer)
+        # _footer_layout.setContentsMargins(10, 8, 10, 8)
+        # _footer_layout.addWidget(QLabel(""))
+        # issue_layout.addWidget(self.conclusion_footer)
 
         grid.addWidget(issue_card, 2, 1, 1, 1)
 
@@ -2754,10 +2754,11 @@ class Dashboard(QWidget):
                 if 'qtc_interval' in self.metric_labels:
                     self.metric_labels['qtc_interval'].setText(str(qtc_text))
                 self._last_metrics_update_ts = _time.time()
-                try:
-                    self.sync_dashboard_metrics_to_ecg_page()
-                except Exception:
-                    pass
+                # This Prevents Jittering of BPM values in inner dashboard
+                # try:
+                #     self.sync_dashboard_metrics_to_ecg_page()
+                # except Exception:
+                #     pass
             else:
                 default_metrics = self.calculate_standard_ecg_metrics(75)
                 if default_metrics:
@@ -3801,8 +3802,8 @@ class Dashboard(QWidget):
         """Open Hyperkalemia Test window in a new window"""
         try:
             from ecg.hyperkalemia_test import HyperkalemiaTestWindow
-            hyperkalemia_window = HyperkalemiaTestWindow(parent=self)
-            hyperkalemia_window.show()
+            self.hyperkalemia_window = HyperkalemiaTestWindow(parent=self, username=self.username)
+            self.hyperkalemia_window.showMaximized()
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to open Hyperkalemia Test window: {str(e)}")
             print(f" Error opening Hyperkalemia test: {e}")
@@ -3811,7 +3812,7 @@ class Dashboard(QWidget):
         """Open the ECG report history window."""
         try:
             from dashboard.history_window import HistoryWindow
-            dlg = HistoryWindow(parent=self)
+            dlg = HistoryWindow(parent=self, username=self.username)
             dlg.exec_()
         except Exception as e:
             QMessageBox.critical(self, "History", f"Failed to open history window: {e}")
@@ -3820,8 +3821,8 @@ class Dashboard(QWidget):
         """Open HRV Test window in a new window"""
         try:
             from ecg.hrv_test import HRVTestWindow
-            hrv_window = HRVTestWindow(parent=self)
-            hrv_window.show()
+            self.hrv_window = HRVTestWindow(parent=self, username=self.username)
+            self.hrv_window.showMaximized()
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to open HRV Test window: {str(e)}")
             print(f" Error opening HRV test: {e}")   
@@ -3829,6 +3830,9 @@ class Dashboard(QWidget):
     def go_to_lead_test(self):
         if hasattr(self, 'ecg_test_page') and hasattr(self.ecg_test_page, 'update_metrics_frame_theme'):
             self.ecg_test_page.update_metrics_frame_theme(self.dark_mode, self.medical_mode)
+
+        if hasattr(self, 'ecg_test_page'):
+            self.ecg_test_page.current_username = self.username
             
         self.page_stack.setCurrentWidget(self.ecg_test_page)
         # Sync dashboard metrics to ECG test page

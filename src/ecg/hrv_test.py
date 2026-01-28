@@ -285,7 +285,7 @@ class HRVTestWindow(QWidget):
             ("HR", "00", "BPM", "heart_rate"),
             ("PR", "0", "ms", "pr_interval"),
             ("QRS Complex", "0", "ms", "qrs_duration"),
-            ("ST", "0.00", "mV", "st_interval"),
+            ("P", "0", "ms", "st_interval"),
             ("QT/Qtc", "0", "ms", "qtc_interval"),
         ]
         
@@ -327,11 +327,12 @@ class HRVTestWindow(QWidget):
         layout.addWidget(plot_frame, stretch=1)
         
         # Info label
-        info_label = QLabel("Capture 5 minutes of Lead II data for HRV analysis. The capture will stop automatically after 5 minutes.")
-        info_label.setFont(QFont("Arial", 10))
-        info_label.setStyleSheet("color: #666; padding: 10px;")
-        info_label.setWordWrap(True)
-        layout.addWidget(info_label)
+        current_lead = self.lead_combo.currentText()
+        self.info_label = QLabel(f"Capture 5 minutes of {current_lead} data for HRV analysis. The capture will stop automatically after 5 minutes.")
+        self.info_label.setFont(QFont("Arial", 10))
+        self.info_label.setStyleSheet("color: #666; padding: 10px;")
+        self.info_label.setWordWrap(True)
+        layout.addWidget(self.info_label)
 
     def on_lead_changed(self, text):
         """Handle lead selection change"""
@@ -600,7 +601,8 @@ class HRVTestWindow(QWidget):
                     # Plot RAW data directly without centering/scaling
                     # User requested: "raw plot... from 0 to 4096 along y-axis and center of lead II should be from 2048"
                     
-                    self.plot_curve.setData(display_times, display_values)
+                    scaled_values = [2048 + (v - 2048) * 0.5 for v in display_values]
+                    self.plot_curve.setData(display_times, scaled_values)
                             
                     # Auto-scale X axis
                     self.plot_widget.setXRange(min(display_times), max(display_times), padding=0.1)
@@ -807,12 +809,19 @@ class HRVTestWindow(QWidget):
                 "HR_avg": hr_avg,
                 "Heart_Rate": hr_value,
             }
+
+            scaled_captured_data = []
+            for d in self.captured_data:
+                # Ensure value is float to avoid type issues
+                val = float(d['value'])
+                scaled_val = 2048.0 + (val - 2048.0) * 0.5
+                scaled_captured_data.append({'time': d['time'], 'value': scaled_val})
             
             # Generate report using the COMPLETE format (same as main ECG report)
             # This includes: Patient Details, Observation, Conclusions, and 5 one-minute Lead II graphs
             result = generate_hrv_ecg_report(
                 filename=filepath,
-                captured_data=self.captured_data,
+                captured_data=scaled_captured_data,
                 data=data,
                 patient=patient,
                 settings_manager=self.settings_manager,
@@ -1049,13 +1058,12 @@ class HRVTestWindow(QWidget):
                 if 'qrs_duration' in self.metric_labels:
                     self.metric_labels['qrs_duration'].setText(f"{qrs_val} ms" if qrs_val != '0' else "0 ms")
                 if 'st_interval' in self.metric_labels:
-                    # Ensure decimal precision for ST
                     try:
-                        f_st = float(st_val)
-                        st_text = f"{f_st:.2f} mV"
+                        p_val = int(round(float(st_val)))
+                        p_text = f"{p_val} ms"
                     except:
-                        st_text = f"{st_val} mV" if st_val != '0' else "0.00 mV"
-                    self.metric_labels['st_interval'].setText(st_text)
+                        p_text = f"{st_val} ms" if st_val != '0' else "0 ms"
+                    self.metric_labels['st_interval'].setText(p_text)
                 if 'qtc_interval' in self.metric_labels:
                     # 12-lead test might return "QT/QTc", handle both
                     if '/' in str(qtc_val):
@@ -1066,7 +1074,7 @@ class HRVTestWindow(QWidget):
                 # Fallback if calculator not available
                 for key in self.metric_labels:
                     if key == 'heart_rate': self.metric_labels[key].setText("00 BPM")
-                    elif key == 'st_interval': self.metric_labels[key].setText("0.00 mV")
+                    elif key == 'st_interval': self.metric_labels[key].setText("0 ms")
                     else: self.metric_labels[key].setText("0 ms")
         
         except Exception as e:

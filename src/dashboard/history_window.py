@@ -28,9 +28,10 @@ REPORTS_DIR = os.path.join(BASE_DIR, "reports")
 class HistoryWindow(QDialog):
     """ECG reports history: shows one row per generated report with basic patient details."""
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, username=None):
         super().__init__(parent)
         self.setWindowTitle("ECG Report History")
+        self.username = username
         
         # Make window responsive to screen size
         screen = QApplication.desktop().screenGeometry()
@@ -173,6 +174,9 @@ class HistoryWindow(QDialog):
 
         # Normalize and populate table
         for entry in history_entries:
+            if self.username and entry.get("username") != self.username:
+                continue
+
             report_file = entry.get("report_file", "") or ""
             report_type = entry.get("report_type", "")
             if not report_type:
@@ -463,9 +467,9 @@ class HistoryWindow(QDialog):
             traceback.print_exc()
 
 
-def append_history_entry(patient_details, report_file_path, report_type="ECG"):
+def append_history_entry(patient_details, report_file_path, report_type="ECG", username=None):
     """Append a new history entry when a report is generated."""
-    print(f" append_history_entry called with patient_details={patient_details}, report_file_path={report_file_path}")
+    print(f" append_history_entry called with patient_details={patient_details}, report_file_path={report_file_path}, username={username}")
     
     # Load existing dedicated history file (rich entries)
     try:
@@ -490,6 +494,7 @@ def append_history_entry(patient_details, report_file_path, report_type="ECG"):
         "date": date_str,
         "time": time_str,
         "report_type": report_type,
+        "username": username,
         "report_file": os.path.abspath(report_file_path) if report_file_path else "",
     }
     if isinstance(patient_details, dict):
