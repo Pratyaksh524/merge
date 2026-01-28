@@ -3454,14 +3454,14 @@ def generate_ecg_report(
         import os
         from reportlab.lib.units import mm
         
-        # STEP 1: Draw FULL A4 PAGE pink ECG grid background with 39×56 boxes
+        # STEP 1: Draw ECG grid with exactly 40×56 boxes across full A4 page
         if canvas.getPageNumber() == 1:  # Changed from 3 to 2
-            # Use full A4 page size
+            # Full page grid: fit exactly 40×56 boxes to A4
             a4_width, a4_height = canvas._pagesize
-            
-            # Calculate box spacing for exactly 39×56 boxes on A4
-            box_width = a4_width / 39  # 5.38mm per box for 39 boxes
-            box_height = a4_height / 56  # 5.30mm per box for 56 boxes
+            grid_x = 0
+            grid_y = 0
+            grid_width = a4_width
+            grid_height = a4_height
             
             # Fill entire A4 page with pink background
             canvas.setFillColor(colors.HexColor("#ffe6e6"))
@@ -3472,41 +3472,43 @@ def generate_ecg_report(
             
             major_grid_color = colors.HexColor("#ffb3b3")   
             
-            # Calculate spacing for exactly 39×56 boxes on A4
-            one_mm = 1 * mm
-            five_mm = 5 * mm  # Standard ECG box size
+            # Box sizes based on full-page fit
+            major_spacing_x = grid_width / 40.0
+            major_spacing_y = grid_height / 56.0
+            minor_spacing_x = major_spacing_x / 5.0
+            minor_spacing_y = major_spacing_y / 5.0
             
             # Draw minor grid lines (1mm) FIRST - bottom layer
             canvas.setStrokeColor(light_grid_color)
             canvas.setLineWidth(0.6)
             
-            # Vertical minor lines - 1mm spacing
-            x_minor = 0
+            # Vertical minor lines
+            x_minor = grid_x
             while x_minor <= a4_width:
                 canvas.line(x_minor, 0, x_minor, a4_height)
-                x_minor += one_mm
+                x_minor += minor_spacing_x
             
-            # Horizontal minor lines - 1mm spacing
-            y_minor = 0
+            # Horizontal minor lines
+            y_minor = grid_y
             while y_minor <= a4_height:
                 canvas.line(0, y_minor, a4_width, y_minor)
-                y_minor += one_mm
+                y_minor += minor_spacing_y
             
             # Draw major grid lines ON TOP - standard 5mm spacing
             canvas.setStrokeColor(major_grid_color)
             canvas.setLineWidth(1.2)
             
-            # Vertical major lines - 5mm spacing (standard ECG)
-            x_major = 0
+            # Vertical major lines
+            x_major = grid_x
             while x_major <= a4_width:
                 canvas.line(x_major, 0, x_major, a4_height)
-                x_major += five_mm
+                x_major += major_spacing_x
             
-            # Horizontal major lines - 5mm spacing (standard ECG)
-            y_major = 0
+            # Horizontal major lines
+            y_major = grid_y
             while y_major <= a4_height:
                 canvas.line(0, y_major, a4_width, y_major)
-                y_major += five_mm
+                y_major += major_spacing_y
             
 
         
