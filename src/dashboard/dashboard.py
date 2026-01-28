@@ -949,7 +949,7 @@ class Dashboard(QWidget):
             ("HR", "00", "BPM", "heart_rate"),
             ("PR", "0", "ms", "pr_interval"),
             ("QRS Complex", "0", "ms", "qrs_duration"),
-            ("ST", "0.00", "mV", "st_interval"),
+            ("P", "0", "ms", "st_interval"),
             ("QT/QTc", "0", "ms", "qtc_interval"),
         ]
         
@@ -2307,26 +2307,50 @@ class Dashboard(QWidget):
                         self.metric_labels['heart_rate'].setText(f"{hr_int:3d} BPM")
                     else:
                         self.metric_labels['heart_rate'].setText(f"{hr_int} BPM")
-            
-            # Update PR Interval
-            if 'pr_interval' in ecg_metrics:
-                self.metric_labels['pr_interval'].setText(f"{ecg_metrics['pr_interval']} ms")
-            
-            # Update QRS Duration
-            if 'qrs_duration' in ecg_metrics:
-                self.metric_labels['qrs_duration'].setText(f"{ecg_metrics['qrs_duration']} ms")
-            
-            # Update ST Interval
-            if 'st_interval' in ecg_metrics:
-                self.metric_labels['st_interval'].setText(f"{ecg_metrics['st_interval']}")
-            
-            # Update QTc Interval (handles both single value and QT/QTc format)
-            if 'qtc_interval' in ecg_metrics:
-                qtc_text = str(ecg_metrics['qtc_interval'])
-                # Remove " ms" suffix if present
-                if qtc_text.endswith(" ms"):
-                    qtc_text = qtc_text[:-3]
-                self.metric_labels['qtc_interval'].setText(qtc_text)
+
+            # ------- PR / QRS / P(ST) / QT/QTc: update at most every 6 seconds -------
+            # Build a compact snapshot of the interval metrics we care about
+            pr_val   = ecg_metrics.get('pr_interval')
+            qrs_val  = ecg_metrics.get('qrs_duration')
+            st_val   = ecg_metrics.get('st_interval')
+            qtc_raw  = ecg_metrics.get('qtc_interval')
+            interval_snapshot = (pr_val, qrs_val, st_val, qtc_raw)
+
+            # Initialise tracking state
+            if not hasattr(self, '_last_interval_metrics_ts'):
+                self._last_interval_metrics_ts = 0.0
+            if not hasattr(self, '_last_interval_metrics_values'):
+                self._last_interval_metrics_values = None
+
+            now = _time.time()
+            since_last = now - self._last_interval_metrics_ts
+
+            # Only redraw PR/QRS/P/QT/QTc if:
+            #  - at least 6 seconds have passed, AND
+            #  - the values actually changed since last update
+            if since_last >= 6.0 and interval_snapshot != self._last_interval_metrics_values:
+                # Update PR Interval
+                if pr_val is not None and 'pr_interval' in self.metric_labels:
+                    self.metric_labels['pr_interval'].setText(f"{pr_val} ms")
+
+                # Update QRS Duration
+                if qrs_val is not None and 'qrs_duration' in self.metric_labels:
+                    self.metric_labels['qrs_duration'].setText(f"{qrs_val} ms")
+
+                # Update ST Interval (used as P duration / ST)
+                if st_val is not None and 'st_interval' in self.metric_labels:
+                    self.metric_labels['st_interval'].setText(f"{st_val}")
+
+                # Update QT/QTc interval text
+                if qtc_raw is not None and 'qtc_interval' in self.metric_labels:
+                    qtc_text = str(qtc_raw)
+                    if qtc_text.endswith(" ms"):
+                        qtc_text = qtc_text[:-3]
+                    self.metric_labels['qtc_interval'].setText(qtc_text)
+
+                # Remember timestamp and snapshot
+                self._last_interval_metrics_ts = now
+                self._last_interval_metrics_values = interval_snapshot
             
             # Update Sampling Rate - Commented out
             # if 'sampling_rate' in ecg_metrics:

@@ -1935,6 +1935,10 @@ class ExpandedLeadView(QDialog):
         
         ⚠️ CLINICAL ANALYSIS: Uses self.ecg_data which comes from parent.data[lead_index]
         This is raw clinical data, NOT display-processed data.
+        
+        - Lead II: Uses parent's standardized metrics to match dashboard display exactly
+        - Other leads (I, III, aVR, aVL, aVF, V1-V6): Calculate independently from their own data
+        This ensures Lead II matches dashboard while other leads show lead-specific analysis.
         """
         try:
             # Check if demo mode is active from parent
@@ -1952,7 +1956,86 @@ class ExpandedLeadView(QDialog):
                 self.update_metric('p_duration', 80)
                 return
             
-            # Otherwise, calculate from real data
+            # For Lead II: Use parent's standardized metrics to match dashboard display
+            # Dashboard metrics are calculated from Lead II, so expanded Lead II should match exactly
+            if self.lead_name == "II" and parent is not None:
+                try:
+                    # Get parent's current metrics (standardized calculations from Lead II)
+                    if hasattr(parent, 'get_current_metrics'):
+                        parent_metrics = parent.get_current_metrics()
+                        
+                        # Extract and update metrics from parent (ensures exact match with dashboard)
+                        def safe_int(val, default=0):
+                            try:
+                                if isinstance(val, str):
+                                    # Remove units and extract number
+                                    val = val.replace(' BPM', '').replace(' bpm', '').replace(' ms', '').replace(' ms', '').strip()
+                                    if '/' in val:
+                                        val = val.split('/')[0]  # Take first value if QT/QTc format
+                                    return int(float(val)) if val and val != '0' else default
+                                return int(float(val)) if val else default
+                            except:
+                                return default
+                        
+                        # Update Heart Rate
+                        if 'heart_rate' in parent_metrics:
+                            hr_val = safe_int(parent_metrics['heart_rate'])
+                            if hr_val > 0:
+                                self.update_metric('heart_rate', hr_val)
+                                self.update_metric('rr_interval', int(60000 / hr_val) if hr_val > 0 else 0)
+                        
+                        # Update PR Interval
+                        if 'pr_interval' in parent_metrics:
+                            pr_val = safe_int(parent_metrics['pr_interval'])
+                            if pr_val > 0:
+                                self.update_metric('pr_interval', pr_val)
+                        
+                        # Update QRS Duration
+                        if 'qrs_duration' in parent_metrics:
+                            qrs_val = safe_int(parent_metrics['qrs_duration'])
+                            if qrs_val > 0:
+                                self.update_metric('qrs_duration', qrs_val)
+                        
+                        # Update P Duration (stored in 'st_interval' label - P replaced ST in display)
+                        # Check multiple sources: 'p_duration', 'st_interval', or parent's last_p_duration attribute
+                        p_val = None
+                        if 'p_duration' in parent_metrics:
+                            p_val = safe_int(parent_metrics['p_duration'])
+                        elif 'st_interval' in parent_metrics:
+                            # P duration is stored in st_interval label (P replaced ST)
+                            st_val = parent_metrics['st_interval']
+                            p_val = safe_int(st_val)
+                        
+                        # Fallback: Try to get from parent's last_p_duration attribute directly
+                        if (p_val is None or p_val == 0) and hasattr(parent, 'last_p_duration'):
+                            try:
+                                p_val = int(parent.last_p_duration) if parent.last_p_duration else 0
+                            except:
+                                pass
+                        
+                        # Update P duration if we found a value (update even if 0 to show current state)
+                        if p_val is not None:
+                            self.update_metric('p_duration', p_val)
+                        
+                        # Update QTc Interval
+                        if 'qtc_interval' in parent_metrics:
+                            qtc_val = parent_metrics['qtc_interval']
+                            if isinstance(qtc_val, str) and '/' in qtc_val:
+                                # Extract QTc value (second part)
+                                qtc_val = qtc_val.split('/')[-1]
+                            qtc_int = safe_int(qtc_val)
+                            if qtc_int > 0:
+                                self.update_metric('qtc_interval', qtc_int)
+                        
+                        # If we successfully got metrics from parent, return early
+                        # This ensures exact match with dashboard values for Lead II
+                        return
+                except Exception as e:
+                    print(f" Error getting parent metrics for Lead II: {e}")
+                    # Fall through to calculate independently if parent metrics unavailable
+            
+            # For all other leads (I, III, aVR, aVL, aVF, V1-V6): Calculate independently from their own data
+            # Each lead calculates its own metrics from its own waveform
             r_peaks, p_peaks, q_peaks, s_peaks, t_peaks = (
                 analysis['r_peaks'], analysis['p_peaks'], analysis['q_peaks'],
                 analysis['s_peaks'], analysis['t_peaks']
@@ -1979,23 +2062,24 @@ class ExpandedLeadView(QDialog):
                     self.update_metric('heart_rate', int(heart_rate))
                     self.update_metric('rr_interval', int(mean_rr))
             
-            # PR Interval and QRS Duration - Use standardized functions for Lead II (same as 12-lead test page)
-            # For Lead II, use median beat method (GE/Philips standard) to match 12-lead test page
+            # PR Interval and QRS Duration - Use median beat method for ALL leads when possible
+            # For each lead, calculate metrics from its own data using median beat analysis
             median_beat = None
             time_axis = None
             tp_baseline = None
             
-            if self.lead_name == "II" and build_median_beat is not None and len(r_peaks) >= 8:
+            # Try to build median beat for this lead's data (works for all leads)
+            if build_median_beat is not None and len(r_peaks) >= 8:
                 try:
-                    # Build median beat from raw clinical data (same as 12-lead test page)
+                    # Build median beat from this lead's raw clinical data
                     time_axis, median_beat = build_median_beat(self.ecg_data, r_peaks, self.sampling_rate, min_beats=8)
                     if median_beat is not None:
-                        # Get TP baseline (same as 12-lead test page)
+                        # Get TP baseline for this lead
                         r_mid = r_peaks[len(r_peaks) // 2]
                         prev_r_idx = r_peaks[len(r_peaks) // 2 - 1] if len(r_peaks) > 1 else None
                         tp_baseline = get_tp_baseline(self.ecg_data, r_mid, self.sampling_rate, prev_r_peak_idx=prev_r_idx)
                 except Exception as e:
-                    print(f" Error building median beat in expanded view: {e}")
+                    print(f" Error building median beat for {self.lead_name}: {e}")
                     median_beat = None
             
             # PR Interval calculation
