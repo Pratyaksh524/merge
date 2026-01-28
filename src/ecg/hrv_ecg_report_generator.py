@@ -3842,8 +3842,8 @@ def generate_hrv_ecg_report(filename="hrv_ecg_report.pdf", captured_data=None, d
     # Chart 1: Avg. RR Interval per minute (Bar Chart) - Standard professional colors
     fig1, ax1 = plt.subplots(figsize=(6.5, 3.5))  # Increased size
     minutes = [f"Min {i+1}" for i in range(len(rr_per_minute))]
-    # Standard report color: Professional blue
-    bars1 = ax1.bar(minutes, rr_per_minute, color='#4169E1', edgecolor='#000080', linewidth=1.5, alpha=0.9)
+    # Medium-intensity blue as requested
+    bars1 = ax1.bar(minutes, rr_per_minute, color='#6497b1', edgecolor='#6497b1', linewidth=1.5, alpha=0.9)
     ax1.set_xlabel('Minutes', fontsize=10, fontweight='bold')
     ax1.set_ylabel('Milliseconds', fontsize=10, fontweight='bold')
     ax1.set_title('Avg. RR Interval per minute', fontsize=12, fontweight='bold')
@@ -3870,8 +3870,8 @@ def generate_hrv_ecg_report(filename="hrv_ecg_report.pdf", captured_data=None, d
     
     # Chart 2: Avg. Heart Rate per minute (Bar Chart) - Standard professional colors
     fig2, ax2 = plt.subplots(figsize=(6.5, 3.5))  # Increased size
-    # Standard report color: Professional red
-    bars2 = ax2.bar(minutes, hr_per_minute, color='#DC143C', edgecolor='#8B0000', linewidth=1.5, alpha=0.9)
+    # Medium-intensity blue as requested
+    bars2 = ax2.bar(minutes, hr_per_minute, color='#6497b1', edgecolor='#6497b1', linewidth=1.5, alpha=0.9)
     ax2.set_xlabel('Minutes', fontsize=10, fontweight='bold')
     ax2.set_ylabel('Beats per minute', fontsize=10, fontweight='bold')
     ax2.set_title('Avg. Heart Rate per minute', fontsize=12, fontweight='bold')
@@ -4237,35 +4237,11 @@ def generate_hrv_ecg_report(filename="hrv_ecg_report.pdf", captured_data=None, d
     )
     
     # Create Frequency Domain chart (further reduced size to fit on Page 2)
-    # Chart 3: Power Spectral Density (Line Chart)
-    fig3, ax3 = plt.subplots(figsize=(7, 2.5))  # Further reduced: (8, 3) to (7, 2.5) to fit on Page 2
-    
-    # Generate sample spectral data (placeholder - to be replaced with actual FFT analysis)
-    frequencies = np.linspace(0, 4, 200)
-    # Create sample peaks at LF (~0.1 Hz) and HF (~0.25 Hz) ranges
-    power = np.random.normal(0, 0.1, len(frequencies))
-    power += 2.0 * np.exp(-((frequencies - 0.1)**2) / 0.01)  # LF peak
-    power += 1.5 * np.exp(-((frequencies - 0.25)**2) / 0.01)  # HF peak
-    power = np.maximum(power, 0)  # Ensure non-negative
-    
-    ax3.plot(frequencies, power, color='#8e44ad', linewidth=2)
-    ax3.fill_between(frequencies, power, alpha=0.3, color='#8e44ad')
-    ax3.set_xlabel('Frequency (Hz)', fontsize=10, fontweight='bold')
-    ax3.set_ylabel('Power Spectral Density', fontsize=10, fontweight='bold')
-    ax3.set_title('Power Spectral Density - Frequency Analysis', fontsize=12, fontweight='bold')
-    ax3.grid(True, alpha=0.3)
-    
-    ax3.set_xlim(0, 0.5)  # Focus on HRV range (0-0.5 Hz)
-    
-    # Save chart 3 to reports directory
-    temp_freq_chart_path = os.path.join(hrv_charts_dir, f'freq_spectrum_{timestamp}.png')
-    fig3.savefig(temp_freq_chart_path, dpi=100, bbox_inches='tight', facecolor='white')
-    plt.close(fig3)
-    
-    # Add Frequency Domain chart to story (further reduced size to fit on Page 2)
+    # Frequency Domain Analysis: leave blank space (remove fake/placeholder graph)
+    # Reserve the same space as the previous chart to keep layout stable.
     freq_domain_table = Table([
-        [Image(temp_freq_chart_path, width=420, height=130)]  # Further reduced: 450x150 to 420x130
-    ], colWidths=[440])  # Reduced from 470 to 440
+        [Spacer(1, 130)]
+    ], colWidths=[440])  # Matches previous chart width
     
     freq_domain_table.setStyle(TableStyle([
         # NO BOX border - removed for cleaner look
@@ -4317,9 +4293,7 @@ def generate_hrv_ecg_report(filename="hrv_ecg_report.pdf", captured_data=None, d
     print(f"   - RR Interval chart: {temp_rr_chart_path}")
     print(f"   - Heart Rate chart: {temp_hr_chart_path}")
     print(f"   - Radar chart: {temp_radar_chart_path}")
-    print(f"   - Frequency Spectrum chart: {temp_freq_chart_path}")
-    
-    print("📊 Added Page 2: HRV Analysis with 4 charts (2 bar + 1 radar + 1 frequency)")
+    print("📊 Added Page 2: HRV Analysis with 3 charts (2 bar + 1 radar) and blank frequency space")
     
     # ==================== SAVE METRICS TO metrics.json (SAME AS MAIN ECG REPORT) ====================
     try:

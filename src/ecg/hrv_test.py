@@ -1,7 +1,4 @@
-"""
-HRV Test Module - 5-minute Lead II capture and HRV report generation
-This module provides a dedicated window for HRV testing with automatic 5-minute capture.
-"""
+
 
 import sys
 import os
