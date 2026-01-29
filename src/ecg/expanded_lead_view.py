@@ -431,12 +431,32 @@ class ExpandedLeadView(QDialog):
         
         self.setWindowTitle(f"Detailed Analysis - {lead_name}")
         # Make dialog responsive from ~13\" laptops up to 27\" monitors
+        # IMPORTANT (multi‑monitor/macOS): Prefer the SAME SCREEN as the parent window,
+        # instead of always using QApplication.primaryScreen() which may be the TV.
         try:
             from PyQt5.QtWidgets import QApplication
-            screen = QApplication.primaryScreen()
-            if screen is not None:
-                geom = screen.availableGeometry()
-                # Use 80% of screen size for initial window
+            target_screen = None
+            # 1) Try to use the parent's screen (same display as main ECG window)
+            if parent is not None:
+                try:
+                    # Qt5: QWidget.screen() returns the QScreen where the widget is shown
+                    if hasattr(parent, "screen") and parent.screen() is not None:
+                        target_screen = parent.screen()
+                    # Fallback: use windowHandle().screen() if available
+                    elif parent.window() is not None and getattr(parent.window(), "windowHandle", None):
+                        handle = parent.window().windowHandle()
+                        if handle is not None and handle.screen() is not None:
+                            target_screen = handle.screen()
+                except Exception:
+                    target_screen = None
+
+            # 2) If we couldn't get parent's screen, fall back to primary screen
+            if target_screen is None:
+                target_screen = QApplication.primaryScreen()
+
+            if target_screen is not None:
+                geom = target_screen.availableGeometry()
+                # Use 80% of target screen size for initial window
                 w = int(geom.width() * 0.8)
                 h = int(geom.height() * 0.8)
                 self.resize(max(960, w), max(600, h))
@@ -447,6 +467,19 @@ class ExpandedLeadView(QDialog):
             self.resize(1280, 720)
         # Reasonable minimum to keep layout usable on small screens
         self.setMinimumSize(960, 600)
+
+        # Center the dialog over the parent window (on the same screen) when possible
+        try:
+            if parent is not None:
+                parent_window = parent.window()
+                if parent_window is not None:
+                    parent_geo = parent_window.frameGeometry()
+                    dialog_geo = self.frameGeometry()
+                    dialog_geo.moveCenter(parent_geo.center())
+                    self.move(dialog_geo.topLeft())
+        except Exception:
+            # If centering fails, let Qt choose default position
+            pass
         self.setStyleSheet("""
             QDialog {
                 background-color: #f0f2f5;
@@ -967,13 +1000,33 @@ class ExpandedLeadView(QDialog):
             valid_mask = ~np.isnan(scaled)
             if np.any(valid_mask):
                 if np.all(valid_mask):
-                    self.ax.plot(time, scaled, color='#0984e3', linewidth=0.7, label='ECG Signal')
+                    # Apply light smoothing for smooth wave appearance
+                    try:
+                        from scipy.ndimage import gaussian_filter1d
+                        if len(scaled) > 3:
+                            scaled = gaussian_filter1d(scaled, sigma=0.5)
+                    except (ImportError, Exception):
+                        if len(scaled) > 3:
+                            kernel_size = 3
+                            kernel = np.ones(kernel_size) / kernel_size
+                            scaled = np.convolve(scaled, kernel, mode='same')
+                    self.ax.plot(time, scaled, color='#0984e3', linewidth=1.5, label='ECG Signal', antialiased=True)
                 else:
                     # Plot only valid segments
                     time_valid = time[valid_mask]
                     scaled_valid = scaled[valid_mask]
                     if len(time_valid) > 1:
-                        self.ax.plot(time_valid, scaled_valid, color='#0984e3', linewidth=0.7, label='ECG Signal')
+                        # Apply smoothing to valid segment
+                        try:
+                            from scipy.ndimage import gaussian_filter1d
+                            if len(scaled_valid) > 3:
+                                scaled_valid = gaussian_filter1d(scaled_valid, sigma=0.5)
+                        except (ImportError, Exception):
+                            if len(scaled_valid) > 3:
+                                kernel_size = 3
+                                kernel = np.ones(kernel_size) / kernel_size
+                                scaled_valid = np.convolve(scaled_valid, kernel, mode='same')
+                        self.ax.plot(time_valid, scaled_valid, color='#0984e3', linewidth=1.5, label='ECG Signal', antialiased=True)
             else:
                 print(f"All data is NaN in expanded view initialization for lead {self.lead_name}")
         
@@ -1479,16 +1532,39 @@ class ExpandedLeadView(QDialog):
                             quality_text = "Quality: Clean"
                     except Exception:
                         pass
+                    # Apply light smoothing for smooth wave appearance
+                    try:
+                        from scipy.ndimage import gaussian_filter1d
+                        if len(display_adc) > 3:
+                            # Light Gaussian smoothing (sigma=0.5) for smooth waves without losing detail
+                            display_adc = gaussian_filter1d(display_adc, sigma=0.5)
+                    except (ImportError, Exception):
+                        # Fallback: simple moving average if scipy not available
+                        if len(display_adc) > 3:
+                            kernel_size = 3
+                            kernel = np.ones(kernel_size) / kernel_size
+                            display_adc = np.convolve(display_adc, kernel, mode='same')
+                    
                     # Plot only valid points
                     if np.all(valid_mask):
-                        # All data is valid - plot normally
-                        self.ax.plot(time, display_adc, color='#0984e3', linewidth=0.7, label='ECG Signal', zorder=1, alpha=waveform_alpha)
+                        # All data is valid - plot normally with anti-aliasing
+                        self.ax.plot(time, display_adc, color='#0984e3', linewidth=1.5, label='ECG Signal', zorder=1, alpha=waveform_alpha, antialiased=True)
                     else:
                         # Some NaN values - plot segments
                         time_valid = time[valid_mask]
                         scaled_valid = display_adc[valid_mask]
                         if len(time_valid) > 1:
-                            self.ax.plot(time_valid, scaled_valid, color='#0984e3', linewidth=0.7, label='ECG Signal', zorder=1, alpha=waveform_alpha)
+                            # Apply smoothing to valid segment
+                            try:
+                                from scipy.ndimage import gaussian_filter1d
+                                if len(scaled_valid) > 3:
+                                    scaled_valid = gaussian_filter1d(scaled_valid, sigma=0.5)
+                            except (ImportError, Exception):
+                                if len(scaled_valid) > 3:
+                                    kernel_size = 3
+                                    kernel = np.ones(kernel_size) / kernel_size
+                                    scaled_valid = np.convolve(scaled_valid, kernel, mode='same')
+                            self.ax.plot(time_valid, scaled_valid, color='#0984e3', linewidth=1.5, label='ECG Signal', zorder=1, alpha=waveform_alpha, antialiased=True)
                 else:
                     print(f" All data is NaN in expanded view for lead {self.lead_name}")
             else:

@@ -912,6 +912,19 @@ class DemoManager:
                 # Apply gain only to the wave, not the axis
                 display_data = base_offset + (centered_slice * effective_gain)
                 display_data = np.nan_to_num(display_data, copy=False)
+                
+                # Apply stronger smoothing for smooth wave appearance in 12-lead view
+                try:
+                    from scipy.ndimage import gaussian_filter1d
+                    if len(display_data) > 5:
+                        # Stronger Gaussian smoothing (sigma=1.0) for very smooth waves in 12-lead view
+                        display_data = gaussian_filter1d(display_data, sigma=1.0)
+                except (ImportError, Exception):
+                    # Fallback: simple moving average if scipy not available
+                    if len(display_data) > 5:
+                        kernel_size = 5
+                        kernel = np.ones(kernel_size) / kernel_size
+                        display_data = np.convolve(display_data, kernel, mode='same')
 
                 n = num_samples_to_show
                 time_axis = np.arange(n, dtype=float) / float(self.samples_per_second)

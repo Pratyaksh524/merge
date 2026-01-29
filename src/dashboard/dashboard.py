@@ -640,32 +640,62 @@ class Dashboard(QWidget):
         # Modern colors matching software orange theme
         pie_colors = ["#ff6600", "#ff8533", "#ffaa66", "#ffcc99", "#ffe6cc", "#fff3e6"]
         
-        # Draw pie without labels to avoid overlap, use legend instead
+        # Draw pie without labels inside, percentages will be outside
+        # Adjust figure margins to accommodate outside labels
+        pie_canvas.figure.subplots_adjust(left=0.05, right=0.7, top=0.95, bottom=0.05)
+        
+        # Calculate percentages
+        total = sum(pie_data)
+        percentages = [(value / total * 100) if total > 0 else 0 for value in pie_data]
+        
+        # Draw pie chart without autopct (no percentages inside)
         wedges, texts, autotexts = pie_canvas.axes.pie(
-            pie_data, labels=None, autopct='%1.0f%%', colors=pie_colors, 
-            startangle=90, pctdistance=0.7
+            pie_data, labels=None, autopct='', colors=pie_colors, 
+            startangle=90
         )
         
-        # Percentage text - adaptive color for readability
-        for i, autotext in enumerate(autotexts):
-            if i < 3:
-                autotext.set_color('white')
+        # Add percentage labels outside the pie chart
+        for i, (wedge, pct) in enumerate(zip(wedges, percentages)):
+            # Calculate angle for label position (middle of the wedge)
+            ang = (wedge.theta2 + wedge.theta1) / 2.0
+            # Convert angle to radians
+            ang_rad = np.deg2rad(ang)
+            # Position label outside the pie (1.2x radius for better spacing)
+            x = 1.2 * np.cos(ang_rad)
+            y = 1.2 * np.sin(ang_rad)
+            # Determine horizontal alignment based on position
+            if abs(x) < 0.3:
+                ha = 'center'
+            elif x > 0:
+                ha = 'left'
             else:
-                autotext.set_color('#222')
-            autotext.set_fontsize(10)
-            autotext.set_weight('bold')
+                ha = 'right'
+            # Add text annotation outside
+            pie_canvas.axes.annotate(
+                f'{pct:.0f}%',
+                xy=(np.cos(ang_rad), np.sin(ang_rad)),
+                xytext=(x, y),
+                ha=ha,
+                va='center',
+                fontsize=9,
+                fontweight='bold',
+                color='#222',
+                bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='none', alpha=0.8)
+            )
         
-        # Add legend on the side instead of labels on pie
-        pie_canvas.axes.legend(
+        # Add legend on the side
+        legend = pie_canvas.axes.legend(
             wedges, pie_labels,
             loc="center left",
-            bbox_to_anchor=(1, 0, 0.5, 1),
+            bbox_to_anchor=(1.02, 0.5),
             fontsize=9,
             frameon=False
         )
+        # Ensure legend doesn't get clipped
+        legend.set_clip_on(False)
         
         pie_canvas.axes.set_aspect('equal')
-        pie_canvas.figure.tight_layout(pad=0.3)
+        pie_canvas.draw()
         pie_canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         visitors_layout.addWidget(pie_canvas)
         

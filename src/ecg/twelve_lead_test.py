@@ -229,7 +229,7 @@ class LiveLeadWindow(QWidget):
         self.canvas = FigureCanvas(self.fig)
         layout.addWidget(self.canvas)
         
-        self.line, = self.ax.plot([], [], color=color, linewidth=0.7)
+        self.line, = self.ax.plot([], [], color=color, linewidth=1.5)
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_plot)
         self.timer.start(50)  # 20 FPS
@@ -1172,7 +1172,8 @@ class ECGTestPage(QWidget):
             
             row, col = positions[i]
             grid.addWidget(plot_widget, row, col)
-            data_line = plot_widget.plot(pen=pg.mkPen(color=lead_color, width=0.7))
+            # Enable anti-aliasing for smooth waves (data smoothing is applied separately)
+            data_line = plot_widget.plot(pen=pg.mkPen(color=lead_color, width=1.5, antialias=True))
 
             self.plot_widgets.append(plot_widget)
             self.data_lines.append(data_line)
@@ -1811,18 +1812,25 @@ class ECGTestPage(QWidget):
         if not hasattr(self, '_hr_smooth_buffer_metrics'):
             self._hr_smooth_buffer_metrics = []
         
-        # Add current reading to buffer (optimized for accuracy and speed)
-        # Reduced buffer size for faster response while maintaining accuracy
+        # Add current reading to buffer (larger buffer for better stability)
         self._hr_smooth_buffer_metrics.append(heart_rate_raw)
-        if len(self._hr_smooth_buffer_metrics) > 10:  # Reduced from 20 to 10 for faster response
+        if len(self._hr_smooth_buffer_metrics) > 20:  # Increased from 10 to 20 for better stability
             self._hr_smooth_buffer_metrics.pop(0)
         
         # Use median of buffer for smoothing (rejects outliers)
-        # Calculate immediately with smaller buffer for faster updates
-        if len(self._hr_smooth_buffer_metrics) >= 2:  # Reduced to 2 for fastest initial response
-            smoothed_hr = int(round(np.median(self._hr_smooth_buffer_metrics)))
+        if len(self._hr_smooth_buffer_metrics) >= 5:  # Require at least 5 readings for stability
+            median_hr = int(round(np.median(self._hr_smooth_buffer_metrics)))
         else:
-            smoothed_hr = heart_rate_raw
+            median_hr = heart_rate_raw
+        
+        # Apply EMA (Exponential Moving Average) for additional smoothing
+        if not hasattr(self, '_hr_ema_metrics'):
+            self._hr_ema_metrics = float(median_hr)
+        
+        # EMA with alpha=0.1 (10% new value, 90% old value) for very stable display
+        alpha = 0.1
+        self._hr_ema_metrics = (1 - alpha) * self._hr_ema_metrics + alpha * median_hr
+        smoothed_hr = int(round(self._hr_ema_metrics))
         
         # ENHANCED STABILITY: Dead zone with hold-and-jump logic
         # Initialize persistence variables
@@ -1836,17 +1844,37 @@ class ECGTestPage(QWidget):
         # Calculate difference between smoothed and displayed value
         diff = abs(smoothed_hr - self._last_displayed_hr)
         
-        # OPTIMIZED DEAD ZONE: Update immediately for any change ≥1 BPM (for accuracy matching Fluke)
-        # Reduced dead zone from 2 BPM to 1 BPM for better accuracy
-        if diff < 1:
+        # STRICT DEAD ZONE: Only update if change is ≥3 BPM (prevents 98-103 flickering)
+        if diff < 3:
             # Change too small: Keep old value (prevents flickering)
             heart_rate = self._last_displayed_hr
             self._pending_hr_value = None
-        elif diff >= 1 and diff <= 5:
-            # Small to medium change (1-5 BPM): Update immediately (for accuracy)
-            self._last_displayed_hr = smoothed_hr
-            heart_rate = smoothed_hr
-            self._pending_hr_value = None
+        elif diff >= 3 and diff <= 8:
+            # Medium change (3-8 BPM): Wait for stability before updating
+            current_time = time.time()
+            if self._pending_hr_value is None:
+                # Start tracking this new potential value
+                self._pending_hr_value = smoothed_hr
+                self._pending_hr_start_time = current_time
+                heart_rate = self._last_displayed_hr  # Keep old value while waiting
+            else:
+                # Check if the new value is consistent with what we are waiting for
+                if abs(smoothed_hr - self._pending_hr_value) <= 2:
+                    # It's consistent. Check how long we've been waiting.
+                    wait_time = 2.0  # Wait 2 seconds for stability
+                    if current_time - self._pending_hr_start_time >= wait_time:
+                        # Waited long enough! Update to new value.
+                        self._last_displayed_hr = smoothed_hr
+                        heart_rate = smoothed_hr
+                        self._pending_hr_value = None
+                    else:
+                        # Still waiting - keep old value
+                        heart_rate = self._last_displayed_hr
+                else:
+                    # The value changed again while waiting - reset timer
+                    self._pending_hr_value = smoothed_hr
+                    self._pending_hr_start_time = current_time
+                    heart_rate = self._last_displayed_hr  # Keep old value
         else:
             # Large change (>5 BPM): Use faster update for very large changes
             # Use module-level time import (already imported at top of file)
@@ -5970,7 +5998,7 @@ class ECGTestPage(QWidget):
                         
                         # Plot the 10-second ECG trace
                         time_axis = np.linspace(0, 10, len(recent_data))  # 10 seconds
-                        ax.plot(time_axis, recent_data, color='black', linewidth=0.8)
+                        ax.plot(time_axis, recent_data, color='black', linewidth=1.5)
                         
                         # Clean medical-style formatting
                         ax.set_xlim(0, 10)
@@ -7685,9 +7713,35 @@ class ECGTestPage(QWidget):
                             if src.size < 2:
                                 resampled = np.zeros(display_len)
                             else:
+                                # Apply smoothing to source data BEFORE interpolation for smoother waves
+                                try:
+                                    from scipy.ndimage import gaussian_filter1d
+                                    if len(src) > 5:
+                                        # Smooth source data first (sigma=0.8) to reduce jitter
+                                        src = gaussian_filter1d(src, sigma=0.8)
+                                except ImportError:
+                                    # Fallback: simple moving average if scipy not available
+                                    if len(src) > 5:
+                                        kernel_size = 5
+                                        kernel = np.ones(kernel_size) / kernel_size
+                                        src = np.convolve(src, kernel, mode='same')
+                                
                                 x_src = np.linspace(0.0, 1.0, src.size)
                                 x_dst = np.linspace(0.0, 1.0, display_len)
                                 resampled = np.interp(x_dst, x_src, src)
+                            
+                            # Apply additional smoothing AFTER interpolation for very smooth waves in 12-lead view
+                            try:
+                                from scipy.ndimage import gaussian_filter1d
+                                if len(resampled) > 5:
+                                    # Additional smoothing (sigma=1.2) after interpolation for maximum smoothness
+                                    resampled = gaussian_filter1d(resampled, sigma=1.2)
+                            except ImportError:
+                                # Fallback: simple moving average if scipy not available
+                                if len(resampled) > 5:
+                                    kernel_size = 5
+                                    kernel = np.ones(kernel_size) / kernel_size
+                                    resampled = np.convolve(resampled, kernel, mode='same')
                             
                             # Center the wave: baseline stays at 2048/-2048, only variations (peaks) grow with gain
                             # Apply offset AFTER gain so baseline position is fixed, only amplitude variations scale
@@ -8047,6 +8101,20 @@ class ECGTestPage(QWidget):
                                 n = 1
                             
                             time_axis = np.arange(n, dtype=float) / sampling_rate
+                            
+                            # Apply stronger smoothing for smooth wave appearance in 12-lead view
+                            try:
+                                from scipy.ndimage import gaussian_filter1d
+                                if len(scaled_data) > 5:
+                                    # Stronger Gaussian smoothing (sigma=1.2) for very smooth waves in 12-lead view
+                                    # This reduces jitter and makes waves appear as smooth as expanded view
+                                    scaled_data = gaussian_filter1d(scaled_data, sigma=1.2)
+                            except (ImportError, Exception):
+                                # Fallback: simple moving average if scipy not available
+                                if len(scaled_data) > 5:
+                                    kernel_size = 7
+                                    kernel = np.ones(kernel_size) / kernel_size
+                                    scaled_data = np.convolve(scaled_data, kernel, mode='same')
                             
                             # Center the wave: add 2048 for non-AVR leads, add -2048 for AVR
                             lead_name = self.leads[i] if i < len(self.leads) else ""

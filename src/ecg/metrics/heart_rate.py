@@ -208,7 +208,7 @@ def calculate_heart_rate_from_signal(lead_data, sampling_rate=None, sampler=None
             
             # Initialize smoothing buffer (larger buffer for better stability)
             if buffer_key not in _bpm_smoothing_buffers:
-                _bpm_smoothing_buffers[buffer_key] = deque(maxlen=15)  # Increased from 10 to 15
+                _bpm_smoothing_buffers[buffer_key] = deque(maxlen=20)  # Increased from 15 to 20 for better stability
             
             buffer = _bpm_smoothing_buffers[buffer_key]
             buffer.append(hr_int)
@@ -223,22 +223,22 @@ def calculate_heart_rate_from_signal(lead_data, sampling_rate=None, sampler=None
             else:
                 median_hr = hr_int
             
-            # Apply EMA (Exponential Moving Average) with alpha=0.15 for smooth updates
+            # Apply EMA (Exponential Moving Average) with alpha=0.1 for very stable updates
             # Lower alpha = more stable, higher alpha = more responsive
-            alpha = 0.15  # 15% new value, 85% old value (very stable)
+            alpha = 0.1  # 10% new value, 90% old value (very stable)
             _bpm_ema_values[buffer_key] = (1 - alpha) * _bpm_ema_values[buffer_key] + alpha * median_hr
             
             smoothed_hr = int(round(_bpm_ema_values[buffer_key]))
             
-            # Final stability check: Only update if change is ≥2 BPM (prevents 99-101 flicker)
+            # Final stability check: Only update if change is ≥3 BPM (prevents 98-103 flicker)
             # This creates a "dead zone" where small fluctuations are ignored
             if buffer_key not in _last_stable_bpm:
                 _last_stable_bpm[buffer_key] = smoothed_hr
             
             last_stable = _last_stable_bpm[buffer_key]
             
-            # Only update if change is significant (≥2 BPM difference)
-            if abs(smoothed_hr - last_stable) >= 2:
+            # Only update if change is significant (≥3 BPM difference) for better stability
+            if abs(smoothed_hr - last_stable) >= 3:
                 _last_stable_bpm[buffer_key] = smoothed_hr
                 return smoothed_hr
             else:
