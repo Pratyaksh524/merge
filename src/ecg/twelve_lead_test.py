@@ -1116,19 +1116,20 @@ class ECGTestPage(QWidget):
         self.data_lines = []
         
         # Define colors for each lead type for consistent color coding (darker shades)
+        # Much darker colors for better visibility on large screens/TV displays
         lead_colors = {
-            'I': '#cc5555',      # Darker Red
-            'II': '#3eb99a',     # Darker Teal  
-            'III': '#3692a8',    # Darker Blue
-            'aVR': '#78a090',    # Darker Green
-            'aVL': '#cba246',    # Darker Yellow
-            'aVF': '#cc7fc2',    # Darker Pink
-            'V1': '#4380cc',     # Darker Light Blue
-            'V2': '#4c1fa4',     # Darker Purple
-            'V3': '#00a8a8',     # Darker Cyan
-            'V4': '#cc7f35',     # Darker Orange
-            'V5': '#0d8969',     # Darker Dark Green
-            'V6': '#be481c'      # Darker Dark Orange
+            'I': '#8B0000',      # Dark Red (very dark)
+            'II': '#006666',     # Dark Teal (very dark)
+            'III': '#003366',    # Dark Blue (very dark)
+            'aVR': '#2d5016',    # Dark Green (very dark)
+            'aVL': '#8B6914',    # Dark Yellow/Brown (very dark)
+            'aVF': '#8B008B',    # Dark Magenta (very dark)
+            'V1': '#000080',     # Navy Blue (very dark)
+            'V2': '#4B0082',     # Indigo (very dark)
+            'V3': '#008080',     # Dark Cyan (very dark)
+            'V4': '#CC6600',     # Dark Orange (darker)
+            'V5': '#006400',     # Dark Green (very dark)
+            'V6': '#8B0000'      # Dark Red (very dark, same as I for contrast)
         }
         
         positions = [(i, j) for i in range(4) for j in range(3)]
@@ -4042,11 +4043,11 @@ class ECGTestPage(QWidget):
             if hasattr(self, 'metric_labels'):
                 # Use fixed-width formatting to prevent text shifting
                 self.metric_labels.get('heart_rate', QLabel()).setText(" 60")
-                self.metric_labels.get('pr_interval', QLabel()).setText("160")
-                self.metric_labels.get('qrs_duration', QLabel()).setText("85")
-                self.metric_labels.get('st_interval', QLabel()).setText("0")
+                self.metric_labels.get('pr_interval', QLabel()).setText("167")
+                self.metric_labels.get('qrs_duration', QLabel()).setText("86")
+                self.metric_labels.get('st_interval', QLabel()).setText("92")  # P duration
                 if 'qtc_interval' in self.metric_labels:
-                    self.metric_labels['qtc_interval'].setText("400/430")
+                    self.metric_labels['qtc_interval'].setText("357/357")
         else:
             # Demo mode is not active - reset metrics to zero
             self.reset_metrics_to_zero()

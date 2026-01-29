@@ -955,11 +955,12 @@ class Dashboard(QWidget):
         # Scroll area for list
         self.reports_list_widget = QWidget()
         self.reports_list_layout = QVBoxLayout(self.reports_list_widget)
-        self.reports_list_layout.setContentsMargins(0,0,0,0)
+        self.reports_list_layout.setContentsMargins(4, 4, 4, 4)  # Add margins to prevent button cropping
         self.reports_list_layout.setSpacing(8)
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setMinimumHeight(180)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)  # Allow horizontal scroll if needed
         scroll.setWidget(self.reports_list_widget)
         reports_v.addWidget(scroll)
 
@@ -1376,11 +1377,13 @@ class Dashboard(QWidget):
         for e in entries[:10]:
             # Build row with hover/touch feedback
             row = QHBoxLayout()
-            row.setContentsMargins(6, 6, 6, 6)
+            row.setContentsMargins(6, 6, 12, 6)  # Increased right margin to 12px to prevent button cropping
+            row.setSpacing(8)  # Add spacing between elements
 
             meta = QLabel(f"{e.get('date','')} {e.get('time','')}  |  {e.get('patient','')}  |  {e.get('title','Report')}")
             meta.setStyleSheet("color: #333333; font-size: 12px;")
             meta.setCursor(Qt.PointingHandCursor)
+            meta.setWordWrap(False)  # Prevent text wrapping
             row.addWidget(meta, 1)
 
             path = os.path.join(reports_dir, e.get('filename',''))
@@ -1395,13 +1398,18 @@ class Dashboard(QWidget):
 
             # "Open" button strictly opens the PDF
             btn = QPushButton("Open")
-            btn.setStyleSheet("background: #ff6600; color: white; border-radius: 8px; padding: 4px 10px; font-weight: bold;")
+            btn.setStyleSheet("background: #ff6600; color: white; border-radius: 8px; padding: 4px 12px; font-weight: bold;")
+            btn.setMinimumWidth(65)  # Increased minimum width to prevent cropping
+            btn.setMaximumWidth(75)  # Set maximum width
+            btn.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)  # Fixed size policy to prevent stretching
             btn.clicked.connect(lambda _, p=path: self.open_report_file(p))
-            row.addWidget(btn)
+            row.addWidget(btn, 0)  # Don't stretch the button
+            row.addSpacing(4)  # Add extra spacing after button
 
             # Container with hover feedback and full-row click
             cont = QWidget()
             cont.setLayout(row)
+            cont.setMinimumHeight(35)  # Ensure container has minimum height
             cont.setCursor(Qt.PointingHandCursor)
             cont.setStyleSheet("background: transparent; border-radius: 8px;")
             cont._meta_label = meta
@@ -2642,7 +2650,13 @@ class Dashboard(QWidget):
                 self.metric_labels['qtc_interval'].setText(f"{int(round(intervals['QTc']))} ms")
             else:
                 self.metric_labels['qtc_interval'].setText("-- ms")
-        if 'ST' in intervals and intervals['ST'] is not None:
+        # Update P Duration (stored in st_interval, label shows "P")
+        if 'P' in intervals and intervals['P'] is not None:
+            key = 'st_interval' if 'st_interval' in self.metric_labels else 'st_segment'
+            self.metric_labels[key].setText(
+                f"{int(round(intervals['P']))} ms" if isinstance(intervals['P'], (int, float)) else str(intervals['P'])
+            )
+        elif 'ST' in intervals and intervals['ST'] is not None:
             # Current metrics card uses 'st_interval' key
             key = 'st_interval' if 'st_interval' in self.metric_labels else 'st_segment'
             self.metric_labels[key].setText(

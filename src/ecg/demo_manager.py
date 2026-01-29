@@ -199,12 +199,12 @@ class DemoManager:
                 # Update ECG test page metrics
                 if hasattr(self.ecg_test_page, 'metric_labels'):
                     self.ecg_test_page.metric_labels.get('heart_rate', QLabel()).setText("60")
-                    self.ecg_test_page.metric_labels.get('pr_interval', QLabel()).setText("160")
-                    self.ecg_test_page.metric_labels.get('qrs_duration', QLabel()).setText("85")
-                    self.ecg_test_page.metric_labels.get('st_interval', QLabel()).setText("0")
+                    self.ecg_test_page.metric_labels.get('pr_interval', QLabel()).setText("167")
+                    self.ecg_test_page.metric_labels.get('qrs_duration', QLabel()).setText("86")
+                    self.ecg_test_page.metric_labels.get('st_interval', QLabel()).setText("92")  # P duration
                     # QTc label may be named 'qtc_interval' depending on UI
                     if 'qtc_interval' in self.ecg_test_page.metric_labels:
-                        self.ecg_test_page.metric_labels['qtc_interval'].setText("380/400")
+                        self.ecg_test_page.metric_labels['qtc_interval'].setText("357/357")
                     print(" Demo metrics set on ECG test page")
                 
                 # Update dashboard metrics (same values)
@@ -213,11 +213,11 @@ class DemoManager:
                     dashboard = getattr(self.ecg_test_page, 'parent', None)
                 if dashboard is not None and hasattr(dashboard, 'metric_labels'):
                     dashboard.metric_labels.get('heart_rate', QLabel()).setText("60 BPM")
-                    dashboard.metric_labels.get('pr_interval', QLabel()).setText("160 ms")
-                    dashboard.metric_labels.get('qrs_duration', QLabel()).setText("85 ms")
-                    dashboard.metric_labels.get('st_interval', QLabel()).setText("0 ms")
+                    dashboard.metric_labels.get('pr_interval', QLabel()).setText("167 ms")
+                    dashboard.metric_labels.get('qrs_duration', QLabel()).setText("86 ms")
+                    dashboard.metric_labels.get('st_interval', QLabel()).setText("92 ms")  # P duration
                     if 'qtc_interval' in dashboard.metric_labels:
-                        dashboard.metric_labels['qtc_interval'].setText("380/400 ms")
+                        dashboard.metric_labels['qtc_interval'].setText("357/357 ms")
                     # Optional: reflect demo sampling rate if shown
                     dashboard.metric_labels.get('sampling_rate', QLabel()).setText("80 Hz")
                     print(" Demo metrics set on dashboard")
@@ -1223,22 +1223,26 @@ class DemoManager:
                         if self._demo_fixed_metrics is None:
                             try:
                                 fixed_hr = 60  # BPM (fixed)
-                                fixed_pr = 160  # ms (fixed)
-                                fixed_qrs = 85  # ms (fixed)
-                                fixed_qt = qt_value  # Calculated QT
-                                fixed_qtc = qtc_value  # Calculated QTc
+                                fixed_rr = 1000  # ms (fixed) - RR interval
+                                fixed_p = 92  # ms (fixed) - P duration
+                                fixed_pr = 167  # ms (fixed)
+                                fixed_qrs = 86  # ms (fixed)
+                                fixed_qt = 357  # ms (fixed)
+                                fixed_qtc = 357  # ms (fixed)
                                 fixed_axis = "0°"
-                                fixed_st = 90  # ms (fixed)
+                                fixed_st = 92  # ms (fixed) - P duration (st_interval displays as "P")
                             except Exception:
-                                fixed_hr, fixed_pr, fixed_qrs, fixed_qt, fixed_qtc, fixed_axis, fixed_st = 60, 160, 85, 380, 400, "0°", 90
+                                fixed_hr, fixed_rr, fixed_p, fixed_pr, fixed_qrs, fixed_qt, fixed_qtc, fixed_axis, fixed_st = 60, 1000, 92, 167, 86, 357, 357, "0°", 92
                             self._demo_fixed_metrics = {
                                 'Heart_Rate': fixed_hr,
+                                'RR': fixed_rr,
+                                'P': fixed_p,
                                 'PR': fixed_pr,
                                 'QRS': fixed_qrs,
                                 'QT': fixed_qt,
                                 'QTc': fixed_qtc,
                                 'QTc_interval': f"{fixed_qt}/{fixed_qtc}",  # Display as QT/QTc format
-                                'ST': fixed_st
+                                'ST': fixed_st  # P duration (st_interval label shows "P")
                             }
 
                         # Always send fixed metrics in demo mode
