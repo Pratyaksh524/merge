@@ -1010,7 +1010,7 @@ class ExpandedLeadView(QDialog):
                             kernel_size = 3
                             kernel = np.ones(kernel_size) / kernel_size
                             scaled = np.convolve(scaled, kernel, mode='same')
-                    self.ax.plot(time, scaled, color='#0984e3', linewidth=1.5, label='ECG Signal', antialiased=True)
+                    self.ax.plot(time, scaled, color='#0984e3', linewidth=0.7, label='ECG Signal', antialiased=True)
                 else:
                     # Plot only valid segments
                     time_valid = time[valid_mask]
@@ -1026,7 +1026,7 @@ class ExpandedLeadView(QDialog):
                                 kernel_size = 3
                                 kernel = np.ones(kernel_size) / kernel_size
                                 scaled_valid = np.convolve(scaled_valid, kernel, mode='same')
-                        self.ax.plot(time_valid, scaled_valid, color='#0984e3', linewidth=1.5, label='ECG Signal', antialiased=True)
+                        self.ax.plot(time_valid, scaled_valid, color='#0984e3', linewidth=0.7, label='ECG Signal', antialiased=True)
             else:
                 print(f"All data is NaN in expanded view initialization for lead {self.lead_name}")
         
@@ -1548,7 +1548,7 @@ class ExpandedLeadView(QDialog):
                     # Plot only valid points
                     if np.all(valid_mask):
                         # All data is valid - plot normally with anti-aliasing
-                        self.ax.plot(time, display_adc, color='#0984e3', linewidth=1.5, label='ECG Signal', zorder=1, alpha=waveform_alpha, antialiased=True)
+                        self.ax.plot(time, display_adc, color='#0984e3', linewidth=0.7, label='ECG Signal', zorder=1, alpha=waveform_alpha, antialiased=True)
                     else:
                         # Some NaN values - plot segments
                         time_valid = time[valid_mask]
@@ -1564,7 +1564,7 @@ class ExpandedLeadView(QDialog):
                                     kernel_size = 3
                                     kernel = np.ones(kernel_size) / kernel_size
                                     scaled_valid = np.convolve(scaled_valid, kernel, mode='same')
-                            self.ax.plot(time_valid, scaled_valid, color='#0984e3', linewidth=1.5, label='ECG Signal', zorder=1, alpha=waveform_alpha, antialiased=True)
+                            self.ax.plot(time_valid, scaled_valid, color='#0984e3', linewidth=0.7, label='ECG Signal', zorder=1, alpha=waveform_alpha, antialiased=True)
                 else:
                     print(f" All data is NaN in expanded view for lead {self.lead_name}")
             else:

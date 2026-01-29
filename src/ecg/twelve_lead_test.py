@@ -229,7 +229,7 @@ class LiveLeadWindow(QWidget):
         self.canvas = FigureCanvas(self.fig)
         layout.addWidget(self.canvas)
         
-        self.line, = self.ax.plot([], [], color=color, linewidth=1.5)
+        self.line, = self.ax.plot([], [], color=color, linewidth=0.7)
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_plot)
         self.timer.start(50)  # 20 FPS
@@ -1173,7 +1173,7 @@ class ECGTestPage(QWidget):
             row, col = positions[i]
             grid.addWidget(plot_widget, row, col)
             # Enable anti-aliasing for smooth waves (data smoothing is applied separately)
-            data_line = plot_widget.plot(pen=pg.mkPen(color=lead_color, width=1.5, antialias=True))
+            data_line = plot_widget.plot(pen=pg.mkPen(color=lead_color, width=0.7, antialias=True))
 
             self.plot_widgets.append(plot_widget)
             self.data_lines.append(data_line)
@@ -5998,7 +5998,7 @@ class ECGTestPage(QWidget):
                         
                         # Plot the 10-second ECG trace
                         time_axis = np.linspace(0, 10, len(recent_data))  # 10 seconds
-                        ax.plot(time_axis, recent_data, color='black', linewidth=1.5)
+                        ax.plot(time_axis, recent_data, color='black', linewidth=0.7)
                         
                         # Clean medical-style formatting
                         ax.set_xlim(0, 10)
